@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣核能公共討論：理性與科學</title>
+    <style>
+        /* --- 基本設定與字體 --- */
+        :root {
+            --font-main: 'Inter', 'Helvetica Neue', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            --color-bg: #f8f9fa;
+            --color-text: #212529;
+            --color-primary: #005f73;
+            --color-secondary: #0a9396;
+            --color-accent: #ee9b00;
+            --color-light-gray: #e9ecef;
+            --color-gray: #6c757d;
+            --color-white: #ffffff;
+            --slide-width: 1280px;
+            --slide-height: 720px;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap');
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 18px;
+        }
+
+        /* --- 投影片容器與比例 --- */
+        #presentation-container {
+            width: 100vw;
+            height: 56.25vw; /* 16:9 Aspect Ratio */
+            max-height: 100vh;
+            max-width: 177.78vh; /* 16:9 Aspect Ratio */
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: var(--color-white);
+        }
+
+        /* --- 投影片基本樣式 --- */
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            transform: scale(0.95);
+            padding: 4rem 5rem 6rem 5rem; /* 增加底部 padding 給 footer UI 空間 */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 1;
+        }
+        
+        .slide-content {
+            width: 100%;
+            max-width: 1100px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* --- 標題與內文排版 --- */
+        h1, h2, h3, h4 {
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.8rem; border-bottom: 3px solid var(--color-secondary); padding-bottom: 0.5rem; margin-bottom: 2rem; }
+        h3 { font-size: 1.8rem; color: var(--color-secondary); text-align: left; margin-top: 1.5rem; }
+        h4 { font-size: 1.2rem; color: var(--color-gray); margin-bottom: 0.5rem; text-align: left; }
+        p { font-size: 1.2rem; line-height: 1.8; margin: 1rem 0; text-align: left; }
+        ul, ol { text-align: left; padding-left: 2rem; }
+        li { margin-bottom: 1rem; font-size: 1.2rem; line-height: 1.8;}
+        strong { color: var(--color-accent); font-weight: 700; }
+
+        /* --- 特定投影片樣式 --- */
+        .title-slide {
+            justify-content: center;
+            text-align: center;
+        }
+        .title-slide h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+        }
+        .title-slide .subtitle {
+            font-size: 1.5rem;
+            color: var(--color-gray);
+            margin-top: 0;
+        }
+        .title-slide .author-info {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+        }
+        
+        .toc-slide ol {
+            columns: 2;
+            column-gap: 4rem;
+            list-style-type: none;
+            counter-reset: toc-counter;
+            padding-left: 0;
+        }
+        .toc-slide li {
+            counter-increment: toc-counter;
+            margin-bottom: 1.2rem; /* 減少行距 */
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .toc-slide li:before {
+            content: counter(toc-counter, decimal-leading-zero); /* 移除點和空格 */
+            color: var(--color-secondary);
+            font-weight: 700;
+            margin-right: 1.5rem;
+        }
+        .toc-slide li:hover {
+            color: var(--color-accent);
+        }
+
+        .two-column {
+            display: flex;
+            gap: 3rem;
+            width: 100%;
+            align-items: flex-start;
+        }
+        .two-column > div {
+            flex: 1;
+        }
+
+        .section-title-slide {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+        .section-title-slide h1, .section-title-slide h2, .section-title-slide .subtitle, .section-title-slide p {
+            color: var(--color-white);
+            text-align: center;
+        }
+        .section-title-slide h1, .section-title-slide h2 {
+            border-bottom: 3px solid var(--color-accent);
+            padding-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        /* --- 表格樣式 --- */
+        .slide-has-table .slide-content {
+            justify-content: flex-start; /* 讓表格從頂部開始，爭取空間 */
+            padding-top: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+        }
+        th, td {
+            border: 1px solid var(--color-light-gray);
+            padding: 0.8rem 1rem; /* 減少 padding */
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            font-weight: 700;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        td ul {
+            padding-left: 1.2rem;
+            margin: 0;
+        }
+        td li {
+            font-size: 0.95rem; /* 微調表格內文字大小 */
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        /* --- UI 元件 --- */
+        #progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 6px;
+            background-color: var(--color-accent);
+            width: 0;
+            transition: width 0.3s ease;
+            z-index: 10;
+        }
+        
+        #footer-ui {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+            box-sizing: border-box;
+            z-index: 5;
+        }
+
+        .nav-button {
+            background-color: rgba(0, 95, 115, 0.7);
+            color: var(--color-white);
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .nav-button:hover {
+            background-color: var(--color-primary);
+        }
+        #nav-buttons-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        #slide-counter {
+            font-size: 1rem;
+            color: var(--color-gray);
+        }
+        
+        .source-button {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--color-gray);
+        }
+        .source-dots {
+            display: flex;
+            margin-left: 8px;
+        }
+        .source-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-secondary);
+            border-radius: 50%;
+            margin: 0 2px;
+            transition: background-color 0.2s;
+        }
+        .source-button:hover .source-dot {
+            background-color: var(--color-accent);
+        }
+
+        /* --- 彈出式視窗 (Modal) --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: var(--color-white);
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .modal-content h3 {
+            margin-top: 0;
+            color: var(--color-primary);
+        }
+        .modal-content ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .modal-content li {
+            font-size: 1rem;
+            border-bottom: 1px solid var(--color-light-gray);
+            padding: 0.5rem 0;
+        }
+        .modal-content li:last-child {
+            border-bottom: none;
+        }
+        .modal-content .source-ref {
+            font-weight: 700;
+            color: var(--color-secondary);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--color-gray);
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        
+        /* --- SVG 圖表 --- */
+        .svg-chart {
+            width: 100%;
+            max-height: 350px;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        <!-- 投影片內容將會插入此處 -->
+
+        <!-- Slide 1: 封面頁 -->
+        <section class="slide active title-slide" data-slide-name="cover">
+            <div class="slide-content">
+                <p class="subtitle">一份基於公開資料的系統性整理</p>
+                <h1>台灣核能公共討論：<br>理性與科學</h1>
+                <div class="author-info">
+                    <p>報告人：蔡秀吉 (thc1006)</p>
+                    <p>資料來源：基於社群協作知識庫</p>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 開場，歡迎大家參與這場重要的公共議題討論。</p>
+                <p>2. 強調本簡報的目標是提供一個基於事實、數據和多方觀點的框架，幫助大家理性思考。</p>
+                <p>3. 說明所有資料均來自先前已建立的公開資料知識庫，目的是促進透明與建設性的對話。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能 @1-6</span>: 綜合所有文件建立的知識庫。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 2: 目錄 -->
+        <section class="slide" data-slide-name="toc">
+            <div class="slide-content">
+                <h2>簡報目錄</h2>
+                <ol class="toc-slide">
+                    <li onclick="goToSlide(2)">公投題目精讀</li>
+                    <li onclick="goToSlide(4)">核能基礎原理</li>
+                    <li onclick="goToSlide(6)">風險治理與教訓</li>
+                    <li onclick="goToSlide(8)">台灣現況盤點</li>
+                    <li onclick="goToSlide(10)">正反論點對照</li>
+                    <li onclick="goToSlide(16)">重啟效益量化</li>
+                    <li onclick="goToSlide(18)">風險與前置條件</li>
+                    <li onclick="goToSlide(20)">兩種情境路線圖</li>
+                    <li onclick="goToSlide(23)">行動清單與 KPI</li>
+                    <li onclick="goToSlide(24)">參考資料</li>
+                </ol>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 快速介紹簡報的結構，從基礎知識到具體情境分析。</p>
+                <p>2. 說明這個流程設計是為了讓聽眾循序漸進，建立完整的認知地圖。</p>
+                <p>3. 預告簡報內容將涵蓋科學、工程、法規、經濟與社會等多個面向。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                 <ul>
+                    <li><span class="source-ref">核能 @1-6</span>: 綜合所有文件建立的知識庫。</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Slide 3: 公投題目精讀 -->
+        <section class="slide" data-slide-name="referendum-question">
+            <div class="slide-content">
+                <h2>公投題目精讀：文字背後的法律意涵</h2>
+                <p style="font-size: 1.5rem; text-align: center; background: var(--color-light-gray); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    「您是否同意第三核能發電廠經<strong>主管機關同意確認無安全疑慮後</strong>，繼續運轉？」
+                </p>
+                <div class="two-column">
+                    <div>
+                        <h3>三大關鍵點</h3>
+                        <ol>
+                            <li><strong>條件句</strong>：公投通過不等於直接開機。它授權政府「可以開始評估」，但前提是必須通過主管機關（核安會）<strong>嚴格的技術性安全審查</strong>。</li>
+                            <li><strong>高門檻</strong>：需滿足「同意票 > 不同意票」且「同意票 ≥ <strong>投票權人總數 25%</strong> (約 489 萬票)」，在非大選日投票率偏低的情況下，通過難度高。</li>
+                            <li><strong>漫長程序</strong>：即使通過，重啟仍需約<strong> 3.5 年</strong>完成安檢、設備整備與燃料採購等程序，無法立即緩解短期供電壓力。</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3>法律效力</h3>
+                        <p>本次公投屬於「重大政策之創制」，其法律效力相對模糊。行政機關僅須為落實內容做「必要處置」。</p>
+                        <p>換言之，公投結果是給予政府一個<strong>強烈的民意方向</strong>，但最終的執行細節與裁量權仍在主管機關的專業判斷。</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 逐字拆解公投主文，強調「主管機關確認無安全疑慮後」是關鍵前提。</p>
+                <p>2. 解釋公投的雙重門檻，並引用歷史數據說明其通過難度，避免過度樂觀或悲觀的預期。</p>
+                <p>3. 點出重啟的預估時程，釐清「公投通過 ≠ 明天就有電」的常見誤解。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@4</span>: 主文與法律脈絡分析。</li>
+                    <li><span class="source-ref">核能@6</span>: 門檻票數估算與程序時程。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 4: 核能基礎 (E=mc²) -->
+        <section class="slide" data-slide-name="basics-emc2">
+            <div class="slide-content">
+                <h2>核能基礎 (1/2)：能量從何而來？</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>E = mc²：質量即能量</h3>
+                        <p>核反應（裂變或融合）之所以能釋放巨大能量，源於反應前後微小的<strong>質量虧損</strong>。</p>
+                        <p>消失的質量，根據愛因斯坦的質能互換公式，完全轉化為能量。這就是核能遠比化學能（如燃燒）強大的根本原因。</p>
+                        <h3>束縛能曲線：裂變與融合的選擇</h3>
+                        <p>原子核的穩定度取決於其「平均單位核子束縛能」。</p>
+                        <ul>
+                            <li><strong>鐵 (Fe)</strong> 是最穩定的元素。</li>
+                            <li>比鐵輕的元素，傾向於<strong>融合</strong>成更重的元素以釋放能量（如太陽）。</li>
+                            <li>比鐵重的元素（如鈾），傾向於<strong>裂變</strong>成較輕的元素以釋放能量。</li>
+                        </ul>
+                    </div>
+                    <div>
+                         <svg viewBox="0 0 500 300" class="svg-chart" aria-labelledby="chart-title" role="img">
+                            <title id="chart-title">束縛能曲線示意圖</title>
+                            <text x="250" y="20" text-anchor="middle" font-size="14" fill="var(--color-primary)">平均單位核子束縛能</text>
+                            <path d="M 10,250 Q 150,50 250,60 T 490,150" stroke="var(--color-secondary)" stroke-width="3" fill="none"/>
+                            <text x="60" y="180" font-size="12" fill="var(--color-text)">核融合區</text>
+                            <text x="380" y="120" font-size="12" fill="var(--color-text)">核裂變區</text>
+                            <circle cx="250" cy="60" r="5" fill="var(--color-accent)"/>
+                            <text x="255" y="55" font-size="12" fill="var(--color-accent)" font-weight="bold">鐵 (Fe)</text>
+                            <line x1="50" y1="280" x2="450" y2="280" stroke="var(--color-gray)" stroke-width="1"/>
+                            <text x="250" y="295" text-anchor="middle" font-size="12" fill="var(--color-gray)">原子質量數 →</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 用生活化的語言解釋 E = mc²，強調「一點點質量可以換取巨大能量」。</p>
+                <p>2. 介紹束縛能曲線，把它比喻成一座「穩定之山」，山頂是鐵。</p>
+                <p>3. 說明核電廠（裂變）是從山的右側往下滑，而未來的核融合（太陽）是從左側往上爬，兩者都是朝向更穩定的狀態釋放能量。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@2</span>: E=mc² 與質量虧損、束縛能曲線。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 5: 核能基礎 (BWR vs PWR) -->
+        <section class="slide slide-has-table" data-slide-name="basics-reactors">
+            <div class="slide-content">
+                <h2>核能基礎 (2/2)：主流反應爐比較</h2>
+                <p>目前全球商轉核電廠多為輕水式反應爐，主要分為沸水式 (BWR) 與壓水式 (PWR)。<strong>台灣核三廠屬於壓水式 (PWR)</strong>。</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>特性</th>
+                            <th>沸水式反應爐 (BWR)</th>
+                            <th>壓水式反應爐 (PWR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>運作原理</strong></td>
+                            <td>爐心內的水直接沸騰產生蒸汽，驅動渦輪機。</td>
+                            <td>一次側迴路的高壓水不沸騰，透過熱交換器加熱二次側迴路的水產生蒸汽。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>優點</strong></td>
+                            <td>
+                                <ul>
+                                    <li>系統結構較簡單</li>
+                                    <li>建置成本相對較低</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>放射性物質隔離在一次側，安全性較高</li>
+                                    <li>運轉穩定度較佳</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>缺點</strong></td>
+                            <td>帶有放射性的蒸汽直接進入渦輪機，廠房需做更多屏蔽。</td>
+                            <td>系統較複雜，需要大型的蒸汽產生器，成本較高。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 說明兩種反應爐都是用水來冷卻和慢化中子，但加熱方式不同。</p>
+                <p>2. 用「一個鍋子燒水」比喻 BWR，用「兩個鍋子，一個煮熱水去熱另一個鍋子的水」比喻 PWR。</p>
+                <p>3. 強調核三廠是 PWR，其雙迴路設計在安全上有先天優勢，這是後續討論風險時的重要背景知識。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@2</span>: 兩種主流水冷爐比較。</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Slide 6: 風險治理 (1/2) -->
+        <section class="slide" data-slide-name="risk-governance1">
+            <div class="slide-content">
+                <h2>風險治理 (1/2)：如何控制鏈式反應？</h2>
+                <p>核電廠的核心挑戰，是將「超臨界」的爆炸性力量，精準控制在「臨界」的穩定發電狀態。這仰賴一套深思熟慮的工程設計。</p>
+                <div class="two-column">
+                    <div>
+                        <h3>三大控制支柱</h3>
+                        <ol>
+                            <li><strong>控制棒 (油門/剎車)</strong>：由吸收中子的材料（如硼、鎘）製成。插入爐心可減緩反應，抽出則加速。緊急情況下，控制棒會完全插入，實現緊急停堆 (SCRAM)。</li>
+                            <li><strong>冷卻劑 (散熱系統)</strong>：通常是水。它不斷循環帶走爐心產生的巨大熱量，防止燃料過熱熔毀，同時將熱能傳遞去發電。</li>
+                            <li><strong>慢化劑 (反應催化劑)</strong>：同樣是水。裂變產生的中子速度太快，不易引發下一次裂變。水可以有效降低中子速度，維持鏈式反應的效率。</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 400 300" class="svg-chart" aria-labelledby="reactor-title" role="img">
+                           <title id="reactor-title">反應爐控制示意圖</title>
+                           <!-- Reactor Vessel -->
+                           <rect x="100" y="50" width="200" height="220" rx="10" fill="var(--color-light-gray)" stroke="var(--color-gray)" stroke-width="2" />
+                           <text x="200" y="40" text-anchor="middle" font-size="12">反應爐壓力槽</text>
+                           <!-- Fuel Rods -->
+                           <rect x="130" y="120" width="20" height="120" fill="#ffcc00" />
+                           <rect x="190" y="120" width="20" height="120" fill="#ffcc00" />
+                           <rect x="250" y="120" width="20" height="120" fill="#ffcc00" />
+                           <text x="200" y="255" text-anchor="middle" font-size="10">燃料棒</text>
+                           <!-- Control Rods -->
+                           <rect id="control-rod" x="160" y="60" width="15" height="120" fill="var(--color-secondary)" />
+                           <rect id="control-rod-2" x="225" y="60" width="15" height="120" fill="var(--color-secondary)" />
+                           <text x="200" y="75" text-anchor="middle" font-size="10" fill="white">控制棒</text>
+                           <!-- Arrows -->
+                           <text x="167" y="55" font-size="20" fill="var(--color-primary)">↓</text>
+                           <text x="232" y="55" font-size="20" fill="var(--color-primary)">↓</text>
+                           <text x="110" y="180" font-size="12" fill="var(--color-primary)">冷卻水</text>
+                           <path d="M 80 150 C 90 170, 90 190, 80 210" stroke="var(--color-primary)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+                           <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-primary)"/></marker></defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 解釋核電廠的運作原理，就像是精準地控制一場「永不熄滅又不會爆炸的火」。</p>
+                <p>2. 使用汽車的比喻：控制棒是油門和剎車，冷卻劑是水箱，慢化劑則像是讓燃料更好燒的催化劑。</p>
+                <p>3. 強調這套系統的複雜性和多層冗餘設計，是核能安全的工程基礎。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@2</span>: 核反應爐組件與工作原理。</li>
+                    <li><span class="source-ref">核能@1</span>: 四大關鍵子系統。</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Slide 7: 風險治理 (2/2) -->
+        <section class="slide slide-has-table" data-slide-name="risk-governance2">
+            <div class="slide-content">
+                <h2>風險治理 (2/2)：從歷史事故中學到的教訓</h2>
+                <p>每一次重大核事故，都暴露了設計或管理上的脆弱性，並成為推動全球核安標準升級的動力。</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>事故</th>
+                            <th>切爾諾貝利 (1986)</th>
+                            <th>福島第一核電廠 (2011)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>主要原因</strong></td>
+                            <td>反應爐設計存在致命缺陷，加上人員在安全測試中進行一連串<strong>嚴重違規操作</strong>。</td>
+                            <td>超出設計基準的<strong>極端天然災害</strong> (9.0 強震 + 15 米海嘯)，導致全廠斷電、冷卻功能完全喪失。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>核心教訓</strong></td>
+                            <td>
+                                <ul>
+                                    <li>安全文化與操作紀律至關重要。</li>
+                                    <li>反應爐必須有本質安全 (Fail-safe) 設計。</li>
+                                    <li>資訊透明與國際合作的必要性。</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>必須考慮「超設計基準」的複合式災難。</li>
+                                    <li>確保備用電源與冷卻系統的多重性與韌性。</li>
+                                    <li>強化嚴重事故的管理與應變計畫。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 style="text-align: center;">結論：安全是持續演進的過程，而非靜態的結果。</h4>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 簡要說明兩起最著名的核事故，並強調其根本原因的差異：一個是人禍，一個是天災。</p>
+                <p>2. 指出切爾諾貝利式的石墨反應爐早已被淘汰，現代反應爐（尤其是 PWR）的設計已從根本上避免了同類事故的可能。</p>
+                <p>3. 強調福島事故後，全球核電廠（包括台灣）都進行了安全總體檢與強化，特別是針對斷電和海嘯的防護措施。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@1</span>: 事故節點與宏觀教訓。</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Slide 8: 台灣現況 (1/2) -->
+        <section class="slide" data-slide-name="taiwan-status1">
+            <div class="slide-content">
+                <h2>台灣現況 (1/2)：能源結構與法規轉變</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>電力結構的挑戰</h3>
+                        <p>台灣是一個能源高度依賴進口 (> 97%) 的海島，電力系統面臨嚴峻挑戰。</p>
+                        <ul>
+                            <li><strong>高化石燃料佔比</strong>：2025 年核電歸零後，預計<strong> 84% </strong>的電力來自化石燃料（燃煤、燃氣），帶來碳排與能源安全風險。</li>
+                            <li><strong>天然氣庫存有限</strong>：LNG 安全庫存僅約<strong> 10-11 天</strong>，供應鏈易受國際情勢與海運影響。</li>
+                            <li><strong>用電需求成長</strong>：半導體與 AI 產業的發展，將持續推高電力需求。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 400 300" class="svg-chart" aria-labelledby="power-mix-title" role="img">
+                            <title id="power-mix-title">2025年預估電力結構</title>
+                            <circle cx="200" cy="150" r="100" fill="#003f5c"/>
+                            <path d="M200,150 L200,50 A100,100 0 0,1 251.7,242.7 Z" fill="#ffa600"/>
+                            <text x="200" y="30" text-anchor="middle" font-size="14" fill="var(--color-primary)">2025年預估電力結構 (核電歸零後)</text>
+                            <text x="130" y="155" fill="white" font-size="16" font-weight="bold">化石燃料 84%</text>
+                            <text x="270" y="220" fill="var(--color-text)" font-size="16" font-weight="bold">再生能源等 16%</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 呈現台灣能源的總體困境：高進口依賴、高化石燃料佔比。</p>
+                <p>2. 透過 SVG 圖表，視覺化地展示核電歸零後，化石燃料佔比高達 84% 的現況，讓觀眾直觀感受風險。</p>
+                <p>3. 強調天然氣庫存天數短的問題，點出台灣能源供應鏈的脆弱性。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@3</span>: 電源結構與供需風險。</li>
+                    <li><span class="source-ref">核能@6</span>: 能源安全（燃料風險）。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 9: 台灣現況 (2/2) -->
+        <section class="slide" data-slide-name="taiwan-status2">
+            <div class="slide-content">
+                <h2>台灣現況 (2/2)：延役法源與核廢困境</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>法規的轉變：40 + 20</h3>
+                        <p>台灣的核能政策在 2025 年出現重大轉折。</p>
+                        <ul>
+                            <li><strong>停止運轉</strong>：2025 年 5 月 17 日，核三廠 2 號機停機，台灣所有核電機組結束商轉。</li>
+                            <li><strong>延役法源</strong>：然而，立法院於同年 5 月 13 日修正《核子反應器設施管制法》，允許核電廠在運轉 40 年期滿後，可申請<strong>延役最多 20 年</strong>。</li>
+                        </ul>
+                        <p>這項修法為核電廠「敗部復活」打開了法律大門，也是此次公投的直接背景。</p>
+                    </div>
+                    <div>
+                        <h3>待解的難題：核廢料</h3>
+                        <p>核廢料是台灣核能發展最棘手的問題，也是社會最主要的疑慮來源。</p>
+                        <ul>
+                            <li><strong>高階核廢料</strong>：用過核燃料的<strong>最終處置場址尚未選定</strong>，相關專法也未完成立法。官方目標是 2055 年啟用，但進度充滿不確定性。</li>
+                            <li><strong>低階核廢料</strong>：目前暫存於蘭嶼，遷出承諾因最終處置場未定而屢次延宕。</li>
+                            <li><strong>乾式貯存</strong>：作為中期解決方案，各廠的乾貯設施興建曾因地方溝通等問題而延誤。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 解釋台灣核能政策的「矛盾」現況：一方面機組全部停機，另一方面法律又打開了延役的大門。</p>
+                <p>2. 強調「核廢料處理」是所有討論的核心癥結點，也是信任的基礎。</p>
+                <p>3. 清楚說明高階、低階、乾貯三種核廢處理的現況與困境，讓觀眾理解問題的複雜性。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@3</span>: 法規框架與核廢進度。</li>
+                    <li><span class="source-ref">核能@6</span>: 核廢處置時程。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 10: 正反論點 (標題頁) -->
+        <section class="slide section-title-slide" data-slide-name="arguments-title">
+             <div class="slide-content">
+                <p class="subtitle">聚焦五大核心爭議</p>
+                <h2>正反論點對照</h2>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">接下來的投影片，我們將逐一檢視公投辯論中最關鍵的五個議題，<br>並對照知識庫中的事實資料進行分析。</p>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 轉場，預告接下來將進入本次簡報的核心部分：正反論點的對照分析。</p>
+                <p>2. 說明挑選這五個議題的標準：它們是公眾最關心、辯論最激烈、且最有事實基礎可以檢驗的爭議點。</p>
+                <p>3. 提醒觀眾，接下來的內容旨在呈現多元觀點與事實，而非引導單一結論。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@4</span>: 公辦電視發表會重點主張。</li>
+                     <li><span class="source-ref">核能@6</span>: 反方論點逐點檢視。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 11: 正反論點 (1/5 地震) -->
+        <section class="slide slide-has-table" data-slide-name="arg-seismic">
+            <div class="slide-content">
+                <h2>論點對照 (1/5)：地質與耐震風險</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">反方主要關切</th>
+                            <th>事實與數據檢視</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>核三廠鄰近活動斷層，原設計的耐震標準 (地表加速度 0.4g) 已不足以應對最新的地震危害評估。</td>
+                            <td>
+                                <ul>
+                                    <li><strong>事實</strong>：核三廠距離恆春斷層約<strong> 0.7–1.1 公里</strong>。</li>
+                                    <li><strong>數據</strong>：根據 2022 年最新的機率式地震危害分析 (SSHAC Level 3)，廠址在特定情境下的地表加速度可能超過<strong> 1.0g</strong>，確實高於原設計基準。</li>
+                                    <li><strong>結論</strong>：此項關切<strong>合理且關鍵</strong>。若要延役，勢必需要進行嚴格的耐震能力重新評估，並可能需要投入鉅資進行結構補強。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 開宗明義，地震風險是反方最強而有力的論點之一。</p>
+                <p>2. 清楚呈現「距離斷層近」和「新標準高於舊設計」這兩個核心事實。</p>
+                <p>3. 強調這不是一個「能不能」的問題，而是一個「需要花多少錢、多少時間來補強到符合最新標準」的工程與經濟問題。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@6</span>: 地質與耐震風險資料。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 12: 正反論點 (2/5 成本) -->
+        <section class="slide slide-has-table" data-slide-name="arg-cost">
+            <div class="slide-content">
+                <h2>論點對照 (2/5)：成本與經濟性</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">主要論點</th>
+                            <th>事實與數據檢視</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>正方</strong>：核電運轉成本低，有助於穩定電價，緩解台電虧損。</td>
+                            <td>
+                                <ul>
+                                    <li><strong>事實</strong>：核電的燃料成本佔總成本比例低，確實不易受國際燃料價格波動影響。</li>
+                                    <li><strong>背景</strong>：台電至 2024 年累積虧損已超過<strong> 4,200 億新台幣</strong>。</li>
+                                    <li><strong>邊際效益</strong>：在高價天然氣時段，核電能有效拉低整體發電成本。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>反方</strong>：延役成本被嚴重低估，包含耐震補強、老舊設備更換等，可能超支，且國際案例屢見不鮮。</td>
+                            <td>
+                                <ul>
+                                    <li><strong>數據</strong>：台電 2018 年曾估算延役成本約<strong> 300 億</strong>，但此數字未包含符合最新耐震標準的補強費用。</li>
+                                    <li><strong>不確定性</strong>：大型組件如蒸汽產生器的更換，不僅昂貴且訂製期長。</li>
+                                    <li><strong>結論</strong>：反方的疑慮<strong>大致合理</strong>。延役的真實總成本目前仍不透明，存在顯著的超支風險。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 說明這是一個「運轉便宜，但維修昂貴」的權衡問題。</p>
+                <p>2. 一方面承認核電在穩定發電成本上的優勢，並連結到台電的財務困境。</p>
+                <p>3. 另一方面，誠實指出延役的「入場費」—— 補強和更換設備的成本 —— 目前是個問號，這是決策中的最大風險。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@5</span>: 台電虧損數據。</li>
+                    <li><span class="source-ref">核能@6</span>: 延役成本估算與不確定性。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 13: 正反論點 (3/5 核廢) -->
+        <section class="slide slide-has-table" data-slide-name="arg-waste">
+            <div class="slide-content">
+                <h2>論點對照 (3/5)：核廢料處置</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">反方主要關切</th>
+                            <th>事實與數據檢視</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>高階核廢料最終處置方案至今懸而未決，重啟只會製造更多無處可去的核廢料，是「債留子孫」。</td>
+                            <td>
+                                <ul>
+                                    <li><strong>事實</strong>：高階核廢料的<strong>最終處置場址未定，專法未過</strong>。這是客觀現況。</li>
+                                    <li><strong>時程</strong>：官方規劃的啟用時間是<strong> 2055 年</strong>，路徑漫長且充滿變數。</li>
+                                    <li><strong>歷史包袱</strong>：蘭嶼低階核廢料貯存場的歷史，已嚴重透支社會信任。</li>
+                                    <li><strong>結論</strong>：此項關切<strong>最具正當性</strong>。在後端處理路徑不明確的情況下，要求前端繼續運轉，在政治與社會溝通上都面臨巨大障礙。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 強調核廢料問題是台灣核能討論的「原罪」和信任的基石。</p>
+                <p>2. 清楚說明「最終處置場址沒著落」是鐵一般的事實，也是反方論點中最難反駁的一點。</p>
+                <p>3. 指出任何支持延役的方案，都必須同時提出一個可信、有具體時程的核廢料處理路徑圖，否則無法取得社會授權。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@3</span>: 台灣核廢現況與挑戰。</li>
+                    <li><span class="source-ref">核能@6</span>: 核廢處置時程。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 14: 正反論點 (4/5 供電) -->
+        <section class="slide slide-has-table" data-slide-name="arg-supply">
+            <div class="slide-content">
+                <h2>論點對照 (4/5)：供電是否足夠？</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">主要論點</th>
+                            <th>事實與數據檢視</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>正方</strong>：AI 與半導體產業發展將導致用電量暴增，台灣面臨缺電風險，需要核能作為穩定基載。</td>
+                            <td>
+                                <ul>
+                                    <li><strong>趨勢</strong>：此論點與國際趨勢相符。美國等地對核能興趣回升，主因就是 AI 資料中心對穩定、低碳電力的龐大需求。</li>
+                                    <li><strong>效益</strong>：核三廠每年可提供約<strong> 15 TWh </strong>的穩定電力，約佔 2024 年總發電量的 6%。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>反方</strong>：台灣不缺電，透過發展再生能源與節能措施即可滿足需求。</td>
+                            <td>
+                                <ul>
+                                    <li><strong>時程</strong>：核三重啟需約 3.5 年，<strong>無法解決短期</strong> (2025-2027) 的供電問題。</li>
+                                    <li><strong>結構風險</strong>：即使總量夠，過度依賴進口天然氣（庫存僅 10-11 天）的結構性風險依然存在。</li>
+                                    <li><strong>結論</strong>：短期內，供電穩定度取決於三接、儲能與電網強化的進度。中長期來看，核能可作為<strong>分散風險的「保險」</strong>，與再生能源互補，而非相互取代。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 釐清爭議：這不是一個「缺不缺電」的簡單是非題，而是一個「電力品質與風險承受度」的選擇題。</p>
+                <p>2. 指出正反方觀點的盲點：正方忽略了重啟的時程，反方則可能低估了能源結構單一化的風險。</p>
+                <p>3. 提出「保險」的概念：核能的角色不是取代再生能源，而是在能源組合中提供一個不受天氣和國際燃料價格劇烈波動影響的穩定選項。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@5</span>: AI 用電趨勢與時程分析。</li>
+                     <li><span class="source-ref">核能@6</span>: 供電量佔比與 LNG 庫存天數。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 15: 正反論點 (5/5 重啟紀錄) -->
+        <section class="slide slide-has-table" data-slide-name="arg-restart">
+            <div class="slide-content">
+                <h2>論點對照 (5/5)：「全世界沒有重啟紀錄」？</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">反方主要關切</th>
+                            <th>事實與數據檢視</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>電視辯論會中，反方代表稱「全世界沒有一個核電廠有重啟紀錄，只有延役」。</td>
+                            <td>
+                                <p>這個說法需要精確定義「重啟」。</p>
+                                <ul>
+                                    <li><strong>廣義重啟 (長期停機後復役)</strong>：<strong>有先例</strong>。美國 TVA 的<strong> Browns Ferry 1 號機</strong>在停機長達<strong> 22 年</strong>後，經過大量投資與改造，於 2007 年成功恢復運轉。</li>
+                                    <li><strong>狹義重啟 (已進入除役程序後再逆轉)</strong>：<strong>極為罕見</strong>。因為機組一旦正式進入除役，許多系統與組件會被永久性地拆除或改變狀態。核三廠的狀況接近此類，因此程序上挑戰極大。</li>
+                                </ul>
+                                <h4 style="text-align:left; margin-top:1rem;">結論：反方說法在「已進入除役程序」的嚴格語境下接近事實，但若泛指所有長期停機，則與國際經驗不符。</h4>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 進行精準的事實查核，釐清辯論中常見的口號式語言。</p>
+                <p>2. 介紹 Browns Ferry 的案例，證明技術上「長期停機後復役」是可行的，但代價高昂。</p>
+                <p>3. 指出核三廠的特殊性，它已停機且進入除役準備階段，這使得它的「重啟」比一般延役更複雜，是台灣獨有的挑戰。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@4</span>: 「全世界沒有重啟紀錄」的事實對照。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 16: 重啟效益量化 (1/2) -->
+        <section class="slide slide-has-table" data-slide-name="benefits-quantified1">
+            <div class="slide-content">
+                <h2>重啟效益量化 (1/2)：對能源與環境的貢獻</h2>
+                <p>若核三廠兩部機組在通過嚴格安審後順利重啟，每年預計可帶來以下實質效益：</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>指標</th>
+                            <th>量化效益</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>穩定供電</strong></td>
+                            <td>~ 15 TWh / 年</td>
+                            <td>約等於 2024 年全國總用電量的<strong> 6%</strong>。可滿足約 150 萬個家庭用戶一年的用電量。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>減少碳排</strong></td>
+                            <td>~ 7.1 百萬噸 CO₂ / 年</td>
+                            <td>以 2024 年電力排碳係數估算。對台灣達成淨零目標、企業應對 CBAM (碳邊境調整機制) 有顯著幫助。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 將抽象的效益轉化為具體的數字，讓觀眾對「重啟」的潛在貢獻有清晰的量級概念。</p>
+                <p>2. 解釋 15 TWh 的意義，例如它佔了全國用電的多少比例，或者可以供應多少家庭。</p>
+                <p>3. 強調減碳效益的現實意義，連結到台灣產業界面臨的國際供應鏈減碳壓力。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@6</span>: 供電與減碳效益量化數據。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 17: 重啟效益量化 (2/2) -->
+        <section class="slide slide-has-table" data-slide-name="benefits-quantified2">
+            <div class="slide-content">
+                <h2>重啟效益量化 (2/2)：對能源安全與電價的影響</h2>
+                 <table>
+                    <thead>
+                        <tr>
+                            <th>指標</th>
+                            <th>量化效益 / 影響</th>
+                            <th>說明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>降低 LNG 依賴</strong></td>
+                            <td>可替代 ~ 100 萬噸 LNG / 年</td>
+                            <td>台灣天然氣庫存天數短，此舉有助於<strong>分散地緣政治與燃料價格波動風險</strong>，提升能源安全韌性。(此處數字由單機組 0.5 百萬噸推估)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>穩定電價</strong></td>
+                            <td>邊際效益</td>
+                            <td>核電的低燃料成本，可在高氣價時段<strong>抑制整體發電成本上漲</strong>。但重啟不等於電價必然下降，仍需考慮延役投資成本與整體電價結構改革。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 再次強調台灣能源供應的脆弱性 (LNG)，並說明核能在此扮演的「風險對沖」角色。</p>
+                <p>2. 務實地解釋對電價的影響：它不是萬靈丹，無法保證電價下降，但可以像一個「穩定器」，減少電價暴漲的機率。</p>
+                <p>3. 總結效益部分：重啟核三的價值主要體現在「穩定」、「低碳」和「風險分散」三個面向。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@5</span>: LNG 替代量與電價邊際效益分析。</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Slide 18: 風險與前置條件 (1/2) -->
+        <section class="slide" data-slide-name="risks-conditions1">
+            <div class="slide-content">
+                <h2>風險與前置條件 (1/2)：重啟不能迴避的三座大山</h2>
+                <p>效益的背後是巨大的責任。任何關於重啟的討論，都必須建立在誠實面對並解決以下三大前提之上。</p>
+                <div class="two-column">
+                    <div>
+                        <h3>1. 耐震安全證明</h3>
+                        <p>這是<strong>技術上的硬門檻</strong>。必須完成符合國際最新標準的耐震評估，並提出可行的補強方案，用公開、可驗證的科學證據，證明廠房在極端地震情境下的安全性。</p>
+                        <p><strong>若無法證明，一切免談。</strong></p>
+                    </div>
+                    <div>
+                        <h3>2. 核廢料路徑圖</h3>
+                        <p>這是<strong>政治與社會的信任門檻</strong>。政府必須提出具體、有法律約束力的核廢料處理路徑圖，包含：</p>
+                        <ul>
+                            <li>高階核廢料最終處置專法時程。</li>
+                            <li>明確的選址機制與在地溝通方案。</li>
+                            <li>蘭嶼低階核廢料的遷出計畫。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 將所有複雜的風險，收斂為三個清晰、易懂的前置條件。</p>
+                <p>2. 強調耐震是「科學問題」，必須由數據說話，沒有妥協空間。</p>
+                <p>3. 強調核廢料是「信任問題」，需要政治承諾和具體行動來回應社會長期的焦慮。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@6</span>: 耐震風險分析。</li>
+                    <li><span class="source-ref">核能@3</span>: 核廢料專法與同意式選址。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 19: 風險與前置條件 (2/2) -->
+        <section class="slide" data-slide-name="risks-conditions2">
+            <div class="slide-content">
+                 <h2>風險與前置條件 (2/2)：重啟不能迴避的三座大山</h2>
+                 <div style="width:100%; text-align:center;">
+                    <h3>3. 在地社會授權</h3>
+                    <p>這是<strong>倫理與正義的門檻</strong>。核設施的風險與效益不成比例地由所在地承擔。因此，必須建立制度化的溝通與回饋機制，取得在地社區的理解與同意，即「社會許可」(Social License)。</p>
+                    <p>具體做法應包含：</p>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li style="text-align:center;">成立具實質權力的在地監督委員會。</li>
+                        <li style="text-align:center;">建立透明的利益共享機制（如電價回饋、發展基金）。</li>
+                        <li style="text-align:center;">落實定期的資訊公開與防災演練。</li>
+                    </ul>
+                 </div>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 引入「社會許可」的概念，說明這不僅是法律問題，更是社會倫理問題。</p>
+                <p>2. 強調「在地」的重要性，指出恆春居民已經承擔了 40 年的風險。</p>
+                <p>3. 提出具體的解決方案，將空泛的「溝通」轉化為可操作的「制度設計」。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@4</span>: 地方正當性與社會授權。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 20: 兩情境路線圖 (標題) -->
+        <section class="slide section-title-slide" data-slide-name="roadmap-title">
+             <div class="slide-content">
+                <p class="subtitle">公投之後，台灣的能源之路</p>
+                <h2>兩種情境的未來路線圖</h2>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">無論公投結果為何，台灣的能源轉型都將繼續。<br>以下我們將推演「同意」與「不同意」兩種情境下，短、中、長期的可能發展路徑。</p>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 轉場，將討論從「應不應該」轉向「然後呢？」。</p>
+                <p>2. 強調無論結果如何，挑戰依然存在，都需要務實的規劃與執行。</p>
+                <p>3. 預告接下來將以時間軸的方式，呈現兩種不同選擇下的未來樣貌。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@5</span>: 兩種情境的短中長期影響分析。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 21: 路線圖 (同意) -->
+        <section class="slide slide-has-table" data-slide-name="roadmap-agree">
+            <div class="slide-content">
+                <h2>路線圖：若公投「同意」並通過</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>時間軸</th>
+                            <th>發展路徑與挑戰</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>短期 (0–5年)</strong></td>
+                            <td>
+                                <ul>
+                                    <li>政策訊號確立「核能為選項之一」。</li>
+                                    <li>行政資源投入延役審查，但<strong>短期供電助益有限</strong>。</li>
+                                    <li>挑戰：社會與政治攻防可能延宕審查進度；仍需強力推進三接、儲能與電網韌性計畫。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>中期 (5–10年)</strong></td>
+                            <td>
+                                <ul>
+                                    <li>若安審通過，核三約於 2029 年後上線，提供每年 15 TWh 低碳基載。</li>
+                                    <li><strong>正面效益</strong>：有助於減碳、降低 LNG 風險、穩定台電財務。</li>
+                                    <li>挑戰：延役的實際成本與工期是否如預期；核廢料處理是否展現具體進展。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>長期 (>10年)</strong></td>
+                            <td>
+                                <ul>
+                                    <li>為台灣保留一個低碳基載選項，能源組合更多元。</li>
+                                    <li>可能為 SMR 等先進核能的法規與人才佈局鋪路。</li>
+                                    <li>挑戰：核廢料最終處置的落實；除役基金的充足性。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 說明「同意」情境下的時間表，再次強調短期內不會有立即改變。</p>
+                <p>2. 指出中期的潛在效益，但也務實點出伴隨而來的挑戰和不確定性。</p>
+                <p>3. 展望長期，說明這個選擇如何影響台灣未來的能源選項與科技佈局。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@5</span>: 「同意」情境下的時間軸分析。</li>
+                    <li><span class="source-ref">核能@6</span>: 中期效益與長期趨勢。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 22: 路線圖 (不同意) -->
+        <section class="slide slide-has-table" data-slide-name="roadmap-disagree">
+            <div class="slide-content">
+                <h2>路線圖：若公投「不同意」或未通過</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>時間軸</th>
+                            <th>發展路徑與挑戰</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>短期 (0–5年)</strong></td>
+                            <td>
+                                <ul>
+                                    <li>政策路徑更聚焦於「再生能源 + 燃氣 + 儲能 + 電網」。</li>
+                                    <li>政治與社會阻力較小，資源可集中投入。</li>
+                                    <li>挑戰：政府<strong>必須</strong>更強力落實三接、儲能、電網等計畫，沒有退路。供電韌性完全取決於執行力。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>中期 (5–10年)</strong></td>
+                            <td>
+                                <ul>
+                                    <li>能源結構將更依賴燃氣作為橋接與備用電力。</li>
+                                    <li><strong>風險暴露較高</strong>：碳排、國際燃料價格、地緣政治風險。</li>
+                                    <li>挑戰：離岸風電與儲能的建置速度能否跟上需求成長；台電財務壓力可能持續。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>長期 (>10年)</strong></td>
+                            <td>
+                                <ul>
+                                    <li>專注於大規模儲能、氫能/氨能等前瞻技術的開發與驗證。</li>
+                                    <li>能源系統的去碳化路徑將更為艱鉅。</li>
+                                    <li>挑戰：需建立更強大的跨區電網與國際燃料對沖策略，以應對系統的間歇性與脆弱性。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 說明「不同意」情境下的路徑，強調這是一個更專注但也風險更集中的選擇。</p>
+                <p>2. 指出此路徑的優點是政治爭議較少，但對政府的執行力要求極高。</p>
+                <p>3. 點出中長期的風險：對天然氣的高度依賴，以及在達成淨零目標上可能面臨的更大挑戰。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@5</span>: 「不同意」情境下的時間軸分析。</li>
+                    <li><span class="source-ref">核能@6</span>: 燃氣淨增與再生能源目標。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 23: 行動清單與KPI -->
+        <section class="slide" data-slide-name="action-plan">
+            <div class="slide-content">
+                <h2>行動清單：無論結果，都該推動的治理革新</h2>
+                <p>無論公投結果如何，為了重建信任、促進理性決策，以下數位治理與透明化措施都應立即推動。</p>
+                <div class="two-column">
+                    <div>
+                        <h3>數位透明化</h3>
+                        <ul>
+                            <li><strong>核能事實儀表板</strong>：建立一站式公開網站，即時呈現機組狀態、輻射監測、燃料庫存、電力負載與碳排數據。</li>
+                            <li><strong>互動情境模擬器</strong>：提供政策沙盒工具，讓民眾可以模擬不同能源配比下的供電可靠度、成本與碳排變化。</li>
+                            <li><strong>核廢共識平台</strong>：利用數位工具輔助最終處置場的選址過程，確保程序公開、可追溯。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>可追蹤的 KPI</h3>
+                        <ul>
+                            <li><strong>核安監督透明牆</strong>：線上公開所有延役/除役審查的進度、會議記錄與審查報告。</li>
+                            <li><strong>EPZ 行動 App 與演練</strong>：開發緊急應變計畫區 (EPZ) 的行動 App，並每年舉行線上防災演練，納入複合式災難情境。</li>
+                        </ul>
+                        <p><strong>核心目標</strong>：將抽象的風險與承諾，轉化為公民可以隨時監督、驗證的具體指標。</p>
+                    </div>
+                </div>
+            </div>
+             <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 提出一個超越黨派和立場的建設性結尾。</p>
+                <p>2. 強調無論選擇哪條路，提升「治理能力」和「社會信任」都是共同的功課。</p>
+                <p>3. 具體介紹數位治理工具，說明科技如何幫助我們更理性、更透明地應對複雜的公共議題。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@3</span>: 數位化推進方案。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 24: 參考資料 -->
+        <section class="slide" data-slide-name="references">
+            <div class="slide-content">
+                <h2>主要參考資料</h2>
+                <p>本簡報所有內容均整理自以下六份基於公開資訊的分析文件，旨在提供一個全面且平衡的視角。</p>
+                <ol style="columns: 2; column-gap: 4rem;">
+                    <li><strong>核能 @1</strong>: 專家講座整理 (歷史、原理、趨勢)</li>
+                    <li><strong>核能 @2</strong>: 學生講座整理 (基礎物理、反應爐工程)</li>
+                    <li><strong>核能 @3</strong>: 台灣政策現況與法規分析</li>
+                    <li><strong>核能 @4</strong>: 公投電視辯論會正反論點分析</li>
+                    <li><strong>核能 @5</strong>: 公投情勢評估與量化效益分析</li>
+                    <li><strong>核能 @6</strong>: 效益再評估與反方論點深度查核</li>
+                </ol>
+                <p style="margin-top: 3rem; font-size: 1rem; color: var(--color-gray);">詳細的逐點來源已標註於每頁投影片的來源清單中。</p>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 再次強調本簡報的資訊基礎，增加內容的可信度。</p>
+                <p>2. 感謝觀眾的參與，並鼓勵大家基於今天獲得的資訊，繼續深入思考和討論。</p>
+                <p>3. 開放 Q&A 時間。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能 @1-6</span>: 綜合所有文件。</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Slide 25: 結尾頁 -->
+        <section class="slide title-slide" data-slide-name="end">
+            <div class="slide-content">
+                <h1>感謝聆聽</h1>
+                <p class="subtitle" style="margin-top: 2rem;">促進理性對話，共創永續未來</p>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 總結簡報，重申理性、科學討論的重要性。</p>
+                <p>2. 鼓勵觀眾將今天的討論帶回自己的社群，擴大影響力。</p>
+                <p>3. 正式結束簡報，再次感謝大家。</p>
+            </div>
+             <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能 @1-6</span>: 綜合所有文件。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- UI 元件 -->
+        <div id="footer-ui">
+            <div id="source-button-container"></div>
+            <div id="slide-counter"></div>
+            <div id="nav-buttons-container">
+                 <button id="prev-btn" class="nav-button" title="上一頁 (←)">&#8249;</button>
+                 <button id="next-btn" class="nav-button" title="下一頁 (→)">&#8250;</button>
+            </div>
+        </div>
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- 彈出式視窗 (Modal) -->
+    <div id="source-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('source-modal')">&times;</button>
+            <h3>本頁主要來源</h3>
+            <div id="source-modal-body"></div>
+        </div>
+    </div>
+
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('help-modal')">&times;</button>
+            <h3>鍵盤快捷鍵</h3>
+            <ul>
+                <li><span class="source-ref">→ / ↓ / Space</span>: 下一頁</li>
+                <li><span class="source-ref">← / ↑</span>: 上一頁</li>
+                <li><span class="source-ref">Home</span>: 回到首頁</li>
+                <li><span class="source-ref">End</span>: 前往末頁</li>
+                <li><span class="source-ref">?</span>: 顯示此說明</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+    // --- 簡報核心邏輯 ---
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress-bar');
+    const slideCounter = document.getElementById('slide-counter');
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const sourceBtnContainer = document.getElementById('source-button-container');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    function updateSlide(newIndex) {
+        // 邊界檢查
+        if (newIndex < 0) {
+            newIndex = 0;
+        } 
+        
+        // 如果是最後一頁的下一頁，則回到首頁
+        if (currentSlide === totalSlides - 1 && newIndex >= totalSlides) {
+            newIndex = 0;
+        } else if (newIndex >= totalSlides) {
+            newIndex = totalSlides - 1;
+        }
+
+        if (newIndex === currentSlide && document.querySelector('.slide.active')) return;
+
+        slides[currentSlide].classList.remove('active');
+        currentSlide = newIndex;
+        slides[currentSlide].classList.add('active');
+
+        updateUI();
+    }
+
+    function updateUI() {
+        // 更新進度條
+        const progress = ((currentSlide + 1) / totalSlides) * 100;
+        progressBar.style.width = `${progress}%`;
+
+        // 更新頁碼
+        slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+        // 更新 URL hash
+        const slideName = slides[currentSlide].dataset.slideName || (currentSlide + 1);
+        window.location.hash = `slide=${slideName}`;
+        
+        // 更新按鈕文字
+        if (currentSlide === totalSlides - 1) {
+            nextBtn.innerHTML = '&#8634;'; // Loop icon
+            nextBtn.title = '回到首頁';
+        } else {
+            nextBtn.innerHTML = '&#8250;';
+            nextBtn.title = '下一頁 (→)';
+        }
+
+        // 建立來源按鈕
+        createSourceButton();
+    }
+
+    function nextSlide() {
+        updateSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        updateSlide(currentSlide - 1);
+    }
+
+    function goToSlide(slideIndex) {
+        updateSlide(slideIndex);
+    }
+    
+    function goToSlideByName(slideName) {
+        const slideIndex = Array.from(slides).findIndex(s => s.dataset.slideName === slideName);
+        if (slideIndex !== -1) {
+            updateSlide(slideIndex);
+        }
+    }
+
+    // --- 事件監聽 ---
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            updateSlide(0);
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            updateSlide(totalSlides - 1);
+        } else if (e.key === '?') {
+            openModal('help-modal');
+        } else if (e.key === 'Escape') {
+            closeModal('source-modal');
+            closeModal('help-modal');
+        }
+    });
+
+    // --- 處理 URL Hash ---
+    function handleHashChange() {
+        const hash = window.location.hash.substring(1);
+        if (!hash.startsWith('slide=')) return;
+        const slideId = hash.substring('slide='.length);
+        
+        const slideIndexByName = Array.from(slides).findIndex(s => s.dataset.slideName === slideId);
+        if (slideIndexByName !== -1) {
+            updateSlide(slideIndexByName);
+            return;
+        }
+
+        const slideIndexByNum = parseInt(slideId) - 1;
+        if (!isNaN(slideIndexByNum) && slideIndexByNum >= 0 && slideIndexByNum < totalSlides) {
+            updateSlide(slideIndexByNum);
+        }
+    }
+
+    window.addEventListener('hashchange', handleHashChange, false);
+
+    // --- 彈出式視窗 (Modal) 邏輯 ---
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('visible');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('visible');
+    }
+
+    // --- 來源按鈕邏輯 ---
+    function createSourceButton() {
+        sourceBtnContainer.innerHTML = ''; // 清空舊按鈕
+        const currentSlideElement = slides[currentSlide];
+        const sourceData = currentSlideElement.querySelector('.sources-data');
+        
+        if (sourceData) {
+            const sourceItems = sourceData.querySelectorAll('li');
+            const button = document.createElement('div');
+            button.className = 'source-button';
+            
+            let dotsHTML = '';
+            for(let i = 0; i < Math.min(sourceItems.length, 3); i++) {
+                dotsHTML += '<div class="source-dot"></div>';
+            }
+            
+            button.innerHTML = `資料來源 <div class="source-dots">${dotsHTML}</div>`;
+            
+            button.onclick = () => {
+                const modalBody = document.getElementById('source-modal-body');
+                modalBody.innerHTML = sourceData.innerHTML;
+                openModal('source-modal');
+            };
+            sourceBtnContainer.appendChild(button);
+        }
+    }
+
+    // --- 初始化 ---
+    function init() {
+        if (window.location.hash) {
+            handleHashChange();
+        } else {
+            updateSlide(0);
+        }
+    }
+
+    window.onload = init;
+
+    </script>
+    
+    <!-- 
+    ==================================================================
+    如何修改或擴充這份簡報
+    ==================================================================
+    這是一份單一 HTML 檔案，您可以直接用任何文字編輯器修改。
+
+    1. **增加/刪除投影片**:
+       - 投影片是由 `<section class="slide">...</section>` 標籤定義的。
+       - 若要新增一頁，請複製一份現有的 `<section>` 區塊，並在 `<body>` 的 `<div id="presentation-container">` 內貼上。
+       - 修改新投影片的 `data-slide-name` 屬性，給它一個獨特的名稱，以便透過 URL hash 連結。
+       - 修改裡面的標題(<h2>)和內容(<p>, <ul>, <table> 等)。
+       - 若要刪除，直接移除對應的 `<section>` 區塊即可。
+
+    2. **修改投影片內容**:
+       - 直接在對應的 `<section>` 標籤內編輯 HTML 內容。
+       - 標題、文字、列表、表格的樣式已由內嵌的 CSS 定義，會自動套用。
+
+    3. **修改備講重點 (Speaker Notes)**:
+       - 每張投影片都有一個 `<div class="speaker-notes" style="display:none;">...</div>` 區塊。
+       - 直接修改裡面的文字內容即可。這些筆記在簡報模式下不會顯示。
+
+    4. **修改資料來源**:
+       - 每張投影片都有一個 `<div class="sources-data" style="display:none;">...</div>` 區塊。
+       - 修改裡面的 `<li>` 項目，即可更新該頁的來源清單。JavaScript 會自動讀取並生成右下角的來源按鈕。
+
+    5. **修改外觀 (CSS)**:
+       - 所有樣式都在 `<head>` 標籤內的 `<style>...</style>` 區塊中。
+       - 您可以修改開頭 `:root` 中的 CSS 變數來快速更換主題顏色或字體，例如：
+         `--color-primary: #005f73;` (主要顏色)
+         `--color-accent: #ee9b00;` (強調色)
+    
+    修改完成後，直接儲存並用瀏覽器打開此 HTML 檔案即可看到更新後的簡報。
+    ==================================================================
+    -->
+</body>
+</html>
