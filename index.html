@@ -401,6 +401,14 @@
             background-color: #d48c00;
             transform: translateY(-2px);
         }
+
+        .summary-text {
+            font-size: 1.3rem;
+            line-height: 1.7;
+            text-align: left;
+            max-width: 900px;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
@@ -662,7 +670,7 @@
                             <li><strong>控制棒 (油門/剎車)</strong>：由吸收中子的材料（如硼、鎘）製成。插入爐心可減緩反應，抽出則加速。緊急情況下，控制棒會完全插入，實現緊急停堆 (SCRAM)。</li>
                             <li><strong>冷卻劑 (散熱系統)</strong>：通常是水。它不斷循環帶走爐心產生的巨大熱量，防止燃料過熱熔毀，同時將熱能傳遞去發電。</li>
                             <li><strong>慢化劑 (反應催化劑)</strong>：同樣是水。裂變產生的中子速度太快，不易引發下一次裂變。水可以有效降低中子速度，維持鏈式反應的效率。</li>
-                        </ol>
+                        </ul>
                     </div>
                     <div>
                         <svg viewBox="0 0 400 300" class="svg-chart" aria-labelledby="reactor-title" role="img">
@@ -725,19 +733,17 @@
                             <td>超出設計基準的<strong>極端天然災害</strong> (9.0 強震 + 15 米海嘯)，導致全廠斷電、冷卻功能完全喪失。</td>
                         </tr>
                         <tr>
-                            <td><strong>核心教訓</strong></td>
+                            <td><strong>健康影響</strong></td>
                             <td>
                                 <ul>
-                                    <li>安全文化與操作紀律至關重要。</li>
-                                    <li>反應爐必須有本質安全 (Fail-safe) 設計。</li>
-                                    <li>資訊透明與國際合作的必要性。</li>
+                                    <li>短期直接死亡約 30-31 人 (消防員與工作人員)。</li>
+                                    <li>長期來看，UN/WHO 估計約 4,000 例額外癌症死亡，但各界對此數字仍有爭議。</li>
                                 </ul>
                             </td>
                             <td>
                                 <ul>
-                                    <li>必須考慮「超設計基準」的複合式災難。</li>
-                                    <li>確保備用電源與冷卻系統的多重性與韌性。</li>
-                                    <li>強化嚴重事故的管理與應變計畫。</li>
+                                    <li>無民眾因直接輻射暴露而死亡 (官方承認 1 名工作人員)。</li>
+                                    <li>但因疏散壓力、醫療中斷等造成的「避難相關死亡」超過 2,300 人。</li>
                                 </ul>
                             </td>
                         </tr>
@@ -756,6 +762,7 @@
             <div class="sources-data" style="display:none;">
                 <ul>
                     <li><span class="source-ref">核能@1</span>: 事故節點與宏觀教訓。</li>
+                    <li><span class="source-ref">Fact-Check</span>: WHO, Britannica.</li>
                 </ul>
             </div>
         </section>
@@ -811,9 +818,9 @@
                 <div class="two-column">
                     <div>
                         <h3>電力結構的挑戰</h3>
-                        <p>台灣是一個能源高度依賴進口 (> 97%) 的海島，電力系統面臨嚴峻挑戰。</p>
+                        <p>台灣是一個能源高度依賴進口 (超過 97%，接近 98%) 的海島，電力系統面臨嚴峻挑戰。</p>
                         <ul>
-                            <li><strong>高化石燃料佔比</strong>：2025 年核電歸零後，預計<strong> 84% </strong>的電力來自化石燃料（燃煤、燃氣），帶來碳排與能源安全風險。</li>
+                            <li><strong>高化石燃料佔比</strong>：2024 年核能發電佔比約 4-4.7%。2025 年核電歸零後，預計<strong> 84% </strong>的電力來自化石燃料。</li>
                             <li><strong>天然氣庫存有限</strong>：LNG 安全庫存僅約<strong> 10-11 天</strong>，供應鏈易受國際情勢與海運影響。</li>
                             <li><strong>用電需求成長</strong>：半導體與 AI 產業的發展，將持續推高電力需求。</li>
                         </ul>
@@ -841,7 +848,7 @@
             <div class="sources-data" style="display:none;">
                 <ul>
                     <li><span class="source-ref">核能@3</span>: 電源結構與供需風險。</li>
-                    <li><span class="source-ref">核能@6</span>: 能源安全（燃料風險）。</li>
+                    <li><span class="source-ref">Fact-Check</span>: 水利署, 環保署.</li>
                 </ul>
             </div>
         </section>
@@ -864,8 +871,8 @@
                         <h3>待解的難題：核廢料</h3>
                         <p>核廢料是台灣核能發展最棘手的問題，也是社會最主要的疑慮來源。</p>
                         <ul>
-                            <li><strong>高階核廢料</strong>：用過核燃料的<strong>最終處置場址尚未選定</strong>，相關專法也未完成立法。官方目標是 2055 年啟用，但進度充滿不確定性。</li>
-                            <li><strong>低階核廢料</strong>：目前暫存於蘭嶼，遷出承諾因最終處置場未定而屢次延宕。</li>
+                            <li><strong>高階核廢料</strong>：用過核燃料的<strong>最終處置場址尚未選定</strong>，相關專法也未完成立法。官方目標是 2055 年啟用。</li>
+                            <li><strong>低階核廢料</strong>：目前有 <strong>97,672 桶</strong>暫存於蘭嶼，遷出承諾因最終處置場未定而屢次延宕。</li>
                             <li><strong>乾式貯存</strong>：作為中期解決方案，各廠的乾貯設施興建曾因地方溝通等問題而延誤。</li>
                         </ul>
                     </div>
@@ -882,7 +889,7 @@
             <div class="sources-data" style="display:none;">
                 <ul>
                     <li><span class="source-ref">核能@3</span>: 法規框架與核廢進度。</li>
-                    <li><span class="source-ref">核能@6</span>: 核廢處置時程。</li>
+                    <li><span class="source-ref">Fact-Check</span>: 台電, 國立大學系統.</li>
                 </ul>
             </div>
         </section>
@@ -1579,8 +1586,13 @@
         <!-- Slide 29: 結尾頁 -->
         <section class="slide title-slide" data-slide-name="end">
             <div class="slide-content">
-                <p class="subtitle" style="margin-top: 2rem; font-size: 1.8rem; line-height: 1.6;">父啊，赦免他們！<br>因為他們不知道自己在做什麼。</p>
-                <p style="text-align: right; width: 100%; max-width: 600px; margin: 1rem auto;">- 路加福音 23:34</p>
+                <p class="summary-text">
+                    <strong>核能不是救世主，也不是天生惡魔，而是一把極鋒利的工具。</strong>在氣候緊迫、能源升級與安全經濟競逐下，問題不在「要或不要」，而在能否同時滿足三前提：<strong>核安合格、核廢有路、民意授權。</strong>若做得到，就把核能當作為轉型爭取時間的選項；不論選哪條路，都應以可驗證數據與清楚定義溝通，避免恐懼式敘事，在科學、風險治理、公共信任與創新投資之間找到務實的平衡點，讓能源政策真正服務永續未來。
+                </p>
+                <div class="quote-container" style="margin-top: 2rem;">
+                    <p class="subtitle" style="font-size: 1.5rem; line-height: 1.6; margin: 0;">父啊，赦免他們！<br>因為他們不知道自己在做什麼。</p>
+                    <p style="text-align: right; width: 100%; max-width: 600px; margin: 1rem auto 0 auto;">- 路加福音 23:34</p>
+                </div>
             </div>
             <!-- Speaker Notes -->
             <div class="speaker-notes" style="display:none;">
