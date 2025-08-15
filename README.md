@@ -35,8 +35,6 @@
 
 ### 貢獻
 
-本專案採用 [Apache-2.0 license](https://github.com/thc1006/taiwan-nuclear-referendum-guide?tab=Apache-2.0-1-ov-file#Apache-2.0-1-ov-file)
-
 本專案歡迎任何形式的貢獻，包含：
 
 * **事實勘誤**：如果您發現簡報中的數據或資訊有誤，請發起一個 [Issue](https://github.com/thc1006/taiwan-nuclear-referendum-guide/issues)。
@@ -44,3 +42,5 @@
 * **內容補充**：如果您有更權威的公開資料來源，也歡迎提供。
 
 ### License
+
+本專案採用 [Apache-2.0 license](https://github.com/thc1006/taiwan-nuclear-referendum-guide?tab=Apache-2.0-1-ov-file#Apache-2.0-1-ov-file)
