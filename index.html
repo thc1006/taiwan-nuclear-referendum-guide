@@ -209,6 +209,9 @@
             text-align: left;
             vertical-align: top;
         }
+        .table-v-center td {
+            vertical-align: middle;
+        }
         th {
             background-color: var(--color-primary);
             color: var(--color-white);
@@ -409,6 +412,35 @@
             max-width: 900px;
             margin-bottom: 2rem;
         }
+
+        .highlight-box {
+            background-color: #f0f7f7;
+            border-left: 5px solid var(--color-secondary);
+            padding: 1.5rem 2rem;
+            margin-top: 2rem;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .highlight-box p {
+            margin-top: 0;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+        .highlight-box ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .highlight-box li {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .highlight-box li::before {
+            content: '✓';
+            color: var(--color-secondary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -566,7 +598,7 @@
             <div class="slide-content">
                 <h2>核能基礎 (2/2)：主流反應爐比較</h2>
                 <p>目前全球商轉核電廠多為輕水式反應爐，主要分為沸水式 (BWR) 與壓水式 (PWR)。<strong>台灣核三廠屬於壓水式 (PWR)</strong>。</p>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>特性</th>
@@ -718,7 +750,7 @@
             <div class="slide-content">
                 <h2>風險治理 (2/2)：從歷史事故中學到的教訓</h2>
                 <p>每一次重大核事故，都暴露了設計或管理上的脆弱性，並成為推動全球核安標準升級的動力。</p>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>事故</th>
@@ -921,7 +953,7 @@
         <section class="slide slide-has-table" data-slide-name="arg-seismic">
             <div class="slide-content">
                 <h2>論點對照 (1/5)：地質與耐震風險</h2>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>反方主要關切</th>
@@ -961,7 +993,7 @@
         <section class="slide slide-has-table" data-slide-name="arg-cost">
             <div class="slide-content">
                 <h2>論點對照 (2/5)：成本與經濟性</h2>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>主要論點</th>
@@ -1052,7 +1084,7 @@
         <section class="slide slide-has-table" data-slide-name="arg-waste">
             <div class="slide-content">
                 <h2>論點對照 (3/5)：核廢料處置</h2>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>反方主要關切</th>
@@ -1094,7 +1126,7 @@
         <section class="slide slide-has-table" data-slide-name="arg-supply">
             <div class="slide-content">
                 <h2>論點對照 (4/5)：供電是否足夠？</h2>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>主要論點</th>
@@ -1144,7 +1176,7 @@
         <section class="slide slide-has-table" data-slide-name="arg-restart">
             <div class="slide-content">
                 <h2>論點對照 (5/5)：「全世界沒有重啟紀錄」？</h2>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>反方主要關切</th>
@@ -1227,7 +1259,7 @@
         <section class="slide slide-has-table" data-slide-name="benefits-quantified2">
             <div class="slide-content">
                 <h2>重啟效益量化 (2/2)：對能源安全與電價的影響</h2>
-                 <table>
+                 <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>指標</th>
@@ -1309,12 +1341,14 @@
                  <div style="width:100%; text-align:center;">
                     <h3>3. 在地社會授權</h3>
                     <p>這是<strong>倫理與正義的門檻</strong>。核設施的風險與效益不成比例地由所在地承擔。因此，必須建立制度化的溝通與回饋機制，取得在地社區的理解與同意，即「社會許可」(Social License)。</p>
-                    <p>具體做法應包含：</p>
-                    <ul style="list-style-type: none; padding-left: 0;">
-                        <li style="text-align:center;">成立具實質權力的在地監督委員會。</li>
-                        <li style="text-align:center;">建立透明的利益共享機制（如電價回饋、發展基金）。</li>
-                        <li style="text-align:center;">落實定期的資訊公開與防災演練。</li>
-                    </ul>
+                    <div class="highlight-box">
+                        <p>具體做法應包含：</p>
+                        <ul>
+                            <li>成立具實質權力的在地監督委員會。</li>
+                            <li>建立透明的利益共享機制（如電價回饋、發展基金）。</li>
+                            <li>落實定期的資訊公開與防災演練。</li>
+                        </ul>
+                    </div>
                  </div>
             </div>
              <!-- Speaker Notes -->
@@ -1358,7 +1392,7 @@
         <section class="slide slide-has-table" data-slide-name="roadmap-agree">
             <div class="slide-content">
                 <h2>路線圖：若公投「同意」並通過</h2>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>時間軸</th>
@@ -1419,7 +1453,7 @@
         <section class="slide slide-has-table" data-slide-name="roadmap-disagree">
             <div class="slide-content">
                 <h2>路線圖：若公投「不同意」或未通過</h2>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>時間軸</th>
