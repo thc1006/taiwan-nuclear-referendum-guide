@@ -115,6 +115,10 @@
         .title-slide .author-info {
             margin-top: 2rem;
             font-size: 1.2rem;
+            text-align: center;
+        }
+        .title-slide .author-info p {
+            text-align: center;
         }
         
         .toc-slide ol {
@@ -145,7 +149,7 @@
             display: flex;
             gap: 3rem;
             width: 100%;
-            align-items: flex-start;
+            align-items: center; /* 垂直置中 */
         }
         .two-column > div {
             flex: 1;
@@ -159,7 +163,8 @@
             color: var(--color-white);
             text-align: center;
         }
-        .section-title-slide h1, .section-title-slide h2 {
+        .section-title-slide h2 {
+            font-size: 3.5rem;
             border-bottom: 3px solid var(--color-accent);
             padding-bottom: 1.5rem;
             display: inline-block;
@@ -167,18 +172,20 @@
 
         /* --- 表格樣式 --- */
         .slide-has-table .slide-content {
-            justify-content: flex-start; /* 讓表格從頂部開始，爭取空間 */
-            padding-top: 2rem;
+            justify-content: flex-start;
+            padding-top: 1rem;
+        }
+         .slide-has-table h2 {
+            margin-bottom: 1rem;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1.5rem;
-            font-size: 1rem;
         }
         th, td {
             border: 1px solid var(--color-light-gray);
-            padding: 0.8rem 1rem; /* 減少 padding */
+            padding: 0.8rem 1rem;
             text-align: left;
             vertical-align: top;
         }
@@ -186,6 +193,8 @@
             background-color: var(--color-primary);
             color: var(--color-white);
             font-weight: 700;
+            text-align: center;
+            font-size: 1.2rem;
         }
         tr:nth-child(even) {
             background-color: #f8f9fa;
@@ -194,10 +203,10 @@
             padding-left: 1.2rem;
             margin: 0;
         }
-        td li {
-            font-size: 0.95rem; /* 微調表格內文字大小 */
+        td p, td li {
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         /* --- UI 元件 --- */
@@ -342,6 +351,36 @@
             max-height: 350px;
             margin: 2rem 0;
         }
+
+        /* --- 特殊頁面樣式 --- */
+        .demon-core-text-box {
+            background-color: var(--color-light-gray);
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+        }
+        .demon-core-text-box p, .demon-core-text-box li {
+            font-size: 1.3rem;
+        }
+        .demon-core-svg {
+            width: 100%;
+            max-height: 450px;
+        }
+        
+        .action-button {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            margin: 1rem auto;
+        }
+        .action-button:hover {
+            background-color: #d48c00;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -356,7 +395,7 @@
                 <h1>台灣核能公共討論：<br>理性與科學</h1>
                 <div class="author-info">
                     <p>報告人：蔡秀吉 (thc1006)</p>
-                    <p>資料來源：基於社群協作知識庫</p>
+                    <p>資料來源：基於社群協作知識庫、Davidson Institute International science club</p>
                 </div>
             </div>
             <!-- Speaker Notes -->
@@ -381,14 +420,16 @@
                 <ol class="toc-slide">
                     <li onclick="goToSlide(2)">公投題目精讀</li>
                     <li onclick="goToSlide(4)">核能基礎原理</li>
-                    <li onclick="goToSlide(6)">風險治理與教訓</li>
-                    <li onclick="goToSlide(8)">台灣現況盤點</li>
-                    <li onclick="goToSlide(10)">正反論點對照</li>
-                    <li onclick="goToSlide(16)">重啟效益量化</li>
-                    <li onclick="goToSlide(18)">風險與前置條件</li>
-                    <li onclick="goToSlide(20)">兩種情境路線圖</li>
-                    <li onclick="goToSlide(23)">行動清單與 KPI</li>
-                    <li onclick="goToSlide(24)">參考資料</li>
+                    <li onclick="goToSlide(6)">未來的希望？</li>
+                    <li onclick="goToSlide(7)">風險治理與教訓</li>
+                    <li onclick="goToSlide(9)">人的因素：安全文化</li>
+                    <li onclick="goToSlide(10)">台灣現況盤點</li>
+                    <li onclick="goToSlide(12)">正反論點對照</li>
+                    <li onclick="goToSlide(19)">重啟效益量化</li>
+                    <li onclick="goToSlide(21)">風險與前置條件</li>
+                    <li onclick="goToSlide(23)">兩種情境路線圖</li>
+                    <li onclick="goToSlide(26)">終極的能源困境</li>
+                    <li onclick="goToSlide(27)">行動清單與 KPI</li>
                 </ol>
             </div>
              <!-- Speaker Notes -->
@@ -549,7 +590,47 @@
             </div>
         </section>
         
-        <!-- Slide 6: 風險治理 (1/2) -->
+        <!-- Slide 6: 未來的希望？SMR 與核融合 -->
+        <section class="slide" data-slide-name="future-tech">
+            <div class="slide-content">
+                <h2>未來的希望？SMR 與核融合</h2>
+                <p>除了現行的反應爐，核能的未來發展聚焦於更安全、更高效的新技術。</p>
+                <div class="two-column">
+                    <div>
+                        <h3>小型模組化反應爐 (SMR)</h3>
+                        <p>SMR 是指發電量較小（通常低於 300 MW）的核電機組，具備工廠預製、模組化運輸與安裝的特性。</p>
+                        <ul>
+                            <li><strong>潛在優點</strong>：更短的工期、更低的初始投資、可依需求彈性擴充、部分設計具備更高的「本質安全」特性。</li>
+                            <li><strong>台灣現況</strong>：國原院已啟動研究計畫，但全球多數 SMR 技術仍在示範階段，商業化時程未定。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>核融合 (聖杯級能源)</h3>
+                        <p>模仿太陽發光發熱的原理，被視為終極潔淨能源。優點是燃料幾乎無限（來自海水），且不產生長半衰期核廢料。</p>
+                        <ul>
+                            <li><strong>巨大挑戰</strong>：需達成極端的高溫高壓條件，並實現「能量淨增益」。</li>
+                            <li><strong>進展</strong>：過去常被戲稱「永遠還有 30 年」，但近年在公私部門的投入下，技術突破信號日增，或許能縮短等待時間。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 介紹 SMR，可以把它比喻成「核能界的樂高」，更有彈性也可能更安全。</p>
+                <p>2. 介紹核融合，強調它的巨大潛力，但也務實點出實現的難度，它還不能解決我們眼前的問題。</p>
+                <p>3. 總結：這些未來科技很重要，但不能當作解決當下能源政策爭議的藉口。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@1</span>: SMR 與核融合介紹。</li>
+                    <li><span class="source-ref">核能@3</span>: 台灣 SMR 研究計畫。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 7: 風險治理 (1/2) -->
         <section class="slide" data-slide-name="risk-governance1">
             <div class="slide-content">
                 <h2>風險治理 (1/2)：如何控制鏈式反應？</h2>
@@ -604,7 +685,7 @@
             </div>
         </section>
         
-        <!-- Slide 7: 風險治理 (2/2) -->
+        <!-- Slide 8: 風險治理 (2/2) -->
         <section class="slide slide-has-table" data-slide-name="risk-governance2">
             <div class="slide-content">
                 <h2>風險治理 (2/2)：從歷史事故中學到的教訓</h2>
@@ -659,7 +740,51 @@
             </div>
         </section>
         
-        <!-- Slide 8: 台灣現況 (1/2) -->
+        <!-- Slide 9: 人的因素：惡魔核心的警示 -->
+        <section class="slide" data-slide-name="human-factor">
+            <div class="slide-content">
+                <h2>人的因素：惡魔核心的警示</h2>
+                <p>技術再先進，也無法完全排除人為失誤。曼哈頓計畫時期的「惡魔核心」(Demon Core) 臨界事故，是安全文化最重要的教材。</p>
+                <div class="two-column">
+                    <div class="demon-core-text-box">
+                        <h3>兩起致命事故的共通點</h3>
+                        <p>在不到一年的時間內，同一枚鈽核心因兩次不同的實驗意外，導致兩位頂尖物理學家死亡。</p>
+                        <ul>
+                            <li><strong>事故一</strong>：科學家徒手操作碳化鎢磚塊，其中一塊意外掉落，造成瞬間臨界。</li>
+                            <li><strong>事故二</strong>：科學家僅用一支螺絲起子來間隔兩片鈹半球，螺絲起子滑脫，造成瞬間臨界。</li>
+                        </ul>
+                        <p><strong>核心教訓</strong>：兩起事故的根源都是<strong>違反操作程序與過度自信</strong>。</p>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 400 300" class="demon-core-svg" aria-labelledby="demon-core-title" role="img">
+                            <title id="demon-core-title">惡魔核心事故示意圖</title>
+                            <circle cx="200" cy="160" r="40" fill="var(--color-gray)"/>
+                            <text x="200" y="165" text-anchor="middle" fill="white" font-size="12">Plutonium Core</text>
+                            <path d="M 120 160 A 80 60 0 0 1 280 160" stroke="var(--color-secondary)" stroke-width="20" fill="none"/>
+                            <path d="M 120 160 A 80 60 0 0 0 280 160" stroke="var(--color-secondary)" stroke-width="20" fill="none" transform="translate(0, 10)"/>
+                            <text x="200" y="120" text-anchor="middle" font-size="12">鈹半球 (中子反射體)</text>
+                            <rect x="230" y="155" width="80" height="10" fill="var(--color-accent)" transform="rotate(-30 230 155)"/>
+                            <text x="290" y="130" font-size="12" fill="var(--color-accent)" font-weight="bold">螺絲起子滑脫！</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 講述「惡魔核心」這個充滿戲劇性的故事，吸引聽眾注意。</p>
+                <p>2. 強調這不是設備故障，而是「人」的問題。連結到切爾諾貝利事故，說明安全文化的重要性。</p>
+                <p>3. 帶出一個反思：我們是否能 100% 相信制度與SOP能約束人性的弱點？這就是風險永遠無法降為零的原因。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@2</span>: 事故教材：Demon Core。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 10: 台灣現況 (1/2) -->
         <section class="slide" data-slide-name="taiwan-status1">
             <div class="slide-content">
                 <h2>台灣現況 (1/2)：能源結構與法規轉變</h2>
@@ -701,7 +826,7 @@
             </div>
         </section>
 
-        <!-- Slide 9: 台灣現況 (2/2) -->
+        <!-- Slide 11: 台灣現況 (2/2) -->
         <section class="slide" data-slide-name="taiwan-status2">
             <div class="slide-content">
                 <h2>台灣現況 (2/2)：延役法源與核廢困境</h2>
@@ -742,7 +867,7 @@
             </div>
         </section>
 
-        <!-- Slide 10: 正反論點 (標題頁) -->
+        <!-- Slide 12: 正反論點 (標題頁) -->
         <section class="slide section-title-slide" data-slide-name="arguments-title">
              <div class="slide-content">
                 <p class="subtitle">聚焦五大核心爭議</p>
@@ -765,14 +890,14 @@
             </div>
         </section>
 
-        <!-- Slide 11: 正反論點 (1/5 地震) -->
+        <!-- Slide 13: 正反論點 (1/5 地震) -->
         <section class="slide slide-has-table" data-slide-name="arg-seismic">
             <div class="slide-content">
                 <h2>論點對照 (1/5)：地質與耐震風險</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50%;">反方主要關切</th>
+                            <th>反方主要關切</th>
                             <th>事實與數據檢視</th>
                         </tr>
                     </thead>
@@ -805,14 +930,14 @@
             </div>
         </section>
 
-        <!-- Slide 12: 正反論點 (2/5 成本) -->
+        <!-- Slide 14: 正反論點 (2/5 成本) -->
         <section class="slide slide-has-table" data-slide-name="arg-cost">
             <div class="slide-content">
                 <h2>論點對照 (2/5)：成本與經濟性</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50%;">主要論點</th>
+                            <th>主要論點</th>
                             <th>事實與數據檢視</th>
                         </tr>
                     </thead>
@@ -856,14 +981,54 @@
             </div>
         </section>
 
-        <!-- Slide 13: 正反論點 (3/5 核廢) -->
+        <!-- Slide 15: 經濟的現實：一場昂貴的賭注？ -->
+        <section class="slide" data-slide-name="economic-reality">
+            <div class="slide-content">
+                <h2>經濟的現實：一場昂貴的賭注？</h2>
+                <p>核電的經濟帳，遠比「一度電多少錢」複雜。它是一項前期投入極高、運轉數十年的長期投資。</p>
+                <div class="two-column">
+                    <div>
+                        <h3>看得見的成本</h3>
+                        <ul>
+                            <li><strong>延役工程</strong>：包含安全評估、耐震補強、更換老化組件等，預估數百億起跳。</li>
+                            <li><strong>運維成本</strong>：日常營運、燃料採購、定期大修。</li>
+                            <li><strong>後端成本</strong>：核廢料的中期貯存與最終處置、廠房除役，是長達數十年甚至百年的持續支出。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>看不見的風險（成本）</h3>
+                        <ul>
+                            <li><strong>工期延宕風險</strong>：國際上核電工程延期是常態，每延遲一天都是巨大的財務損失。</li>
+                            <li><strong>政策風險</strong>：未來的能源或核廢料政策改變，可能增加額外成本。</li>
+                            <li><strong>災變財務風險</strong>：儘管機率極低，但一次嚴重事故的社會與財務成本可能高到無法估算。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 帶領觀眾跳脫單純的發電成本，從「全生命週期」的角度看待核電的經濟性。</p>
+                <p>2. 用「冰山」來比喻：發電成本只是水面上的部分，水面下還有龐大的建置、除役和廢料處理成本。</p>
+                <p>3. 幽默地說：蓋核電廠就像某些軟體專案，幾乎總是超出預算、延遲交付。這不是要否定它，而是要務實看待風險。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@4</span>: 成本與工期不確定性。</li>
+                    <li><span class="source-ref">核能@6</span>: 成本與經濟性不確定。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 16: 正反論點 (3/5 核廢) -->
         <section class="slide slide-has-table" data-slide-name="arg-waste">
             <div class="slide-content">
                 <h2>論點對照 (3/5)：核廢料處置</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50%;">反方主要關切</th>
+                            <th>反方主要關切</th>
                             <th>事實與數據檢視</th>
                         </tr>
                     </thead>
@@ -887,7 +1052,7 @@
                 <h3>備講重點：</h3>
                 <p>1. 強調核廢料問題是台灣核能討論的「原罪」和信任的基石。</p>
                 <p>2. 清楚說明「最終處置場址沒著落」是鐵一般的事實，也是反方論點中最難反駁的一點。</p>
-                <p>3. 指出任何支持延役的方案，都必須同時提出一個可信、有具體時程的核廢料處理路徑圖，否則無法取得社會授權。</p>
+                <p>3. 帶點黑色幽默：這就像一個燙手山芋的傳球遊戲，只是這個遊戲要玩十萬年。</p>
             </div>
             <!-- Sources -->
             <div class="sources-data" style="display:none;">
@@ -898,14 +1063,14 @@
             </div>
         </section>
 
-        <!-- Slide 14: 正反論點 (4/5 供電) -->
+        <!-- Slide 17: 正反論點 (4/5 供電) -->
         <section class="slide slide-has-table" data-slide-name="arg-supply">
             <div class="slide-content">
                 <h2>論點對照 (4/5)：供電是否足夠？</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50%;">主要論點</th>
+                            <th>主要論點</th>
                             <th>事實與數據檢視</th>
                         </tr>
                     </thead>
@@ -948,14 +1113,14 @@
             </div>
         </section>
 
-        <!-- Slide 15: 正反論點 (5/5 重啟紀錄) -->
+        <!-- Slide 18: 正反論點 (5/5 重啟紀錄) -->
         <section class="slide slide-has-table" data-slide-name="arg-restart">
             <div class="slide-content">
                 <h2>論點對照 (5/5)：「全世界沒有重啟紀錄」？</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50%;">反方主要關切</th>
+                            <th>反方主要關切</th>
                             <th>事實與數據檢視</th>
                         </tr>
                     </thead>
@@ -989,7 +1154,7 @@
             </div>
         </section>
 
-        <!-- Slide 16: 重啟效益量化 (1/2) -->
+        <!-- Slide 19: 重啟效益量化 (1/2) -->
         <section class="slide slide-has-table" data-slide-name="benefits-quantified1">
             <div class="slide-content">
                 <h2>重啟效益量化 (1/2)：對能源與環境的貢獻</h2>
@@ -1031,7 +1196,7 @@
             </div>
         </section>
 
-        <!-- Slide 17: 重啟效益量化 (2/2) -->
+        <!-- Slide 20: 重啟效益量化 (2/2) -->
         <section class="slide slide-has-table" data-slide-name="benefits-quantified2">
             <div class="slide-content">
                 <h2>重啟效益量化 (2/2)：對能源安全與電價的影響</h2>
@@ -1072,7 +1237,7 @@
             </div>
         </section>
         
-        <!-- Slide 18: 風險與前置條件 (1/2) -->
+        <!-- Slide 21: 風險與前置條件 (1/2) -->
         <section class="slide" data-slide-name="risks-conditions1">
             <div class="slide-content">
                 <h2>風險與前置條件 (1/2)：重啟不能迴避的三座大山</h2>
@@ -1110,7 +1275,7 @@
             </div>
         </section>
 
-        <!-- Slide 19: 風險與前置條件 (2/2) -->
+        <!-- Slide 22: 風險與前置條件 (2/2) -->
         <section class="slide" data-slide-name="risks-conditions2">
             <div class="slide-content">
                  <h2>風險與前置條件 (2/2)：重啟不能迴避的三座大山</h2>
@@ -1140,7 +1305,7 @@
             </div>
         </section>
 
-        <!-- Slide 20: 兩情境路線圖 (標題) -->
+        <!-- Slide 23: 兩情境路線圖 (標題) -->
         <section class="slide section-title-slide" data-slide-name="roadmap-title">
              <div class="slide-content">
                 <p class="subtitle">公投之後，台灣的能源之路</p>
@@ -1162,7 +1327,7 @@
             </div>
         </section>
 
-        <!-- Slide 21: 路線圖 (同意) -->
+        <!-- Slide 24: 路線圖 (同意) -->
         <section class="slide slide-has-table" data-slide-name="roadmap-agree">
             <div class="slide-content">
                 <h2>路線圖：若公投「同意」並通過</h2>
@@ -1223,7 +1388,7 @@
             </div>
         </section>
 
-        <!-- Slide 22: 路線圖 (不同意) -->
+        <!-- Slide 25: 路線圖 (不同意) -->
         <section class="slide slide-has-table" data-slide-name="roadmap-disagree">
             <div class="slide-content">
                 <h2>路線圖：若公投「不同意」或未通過</h2>
@@ -1284,7 +1449,45 @@
             </div>
         </section>
 
-        <!-- Slide 23: 行動清單與KPI -->
+        <!-- Slide 26: 終極的能源三難困境 -->
+        <section class="slide" data-slide-name="trilemma">
+            <div class="slide-content">
+                <h2>思考題：終極的能源三難困境</h2>
+                <p>能源政策從來不是單選題，而是在三個互相拉扯的目標中尋找平衡的藝術。這就是「能源三難困境」(Energy Trilemma)。</p>
+                <button id="reveal-trilemma-btn" class="action-button" onclick="revealTrilemma()">揭示三難困境</button>
+                <svg id="trilemma-svg" viewBox="0 0 500 400" class="svg-chart" style="max-height: 400px; display: none;" aria-labelledby="trilemma-title" role="img">
+                    <title id="trilemma-title">能源三難困境示意圖</title>
+                    <polygon points="250,50 450,350 50,350" fill="rgba(10, 147, 150, 0.1)" stroke="var(--color-secondary)" stroke-width="3"/>
+                    <circle cx="250" cy="50" r="15" fill="var(--color-accent)"/>
+                    <text x="250" y="40" text-anchor="middle" font-size="16" font-weight="bold">環境永續</text>
+                    <text x="250" y="70" text-anchor="middle" font-size="12">(低碳排)</text>
+                    <circle cx="450" cy="350" r="15" fill="var(--color-accent)"/>
+                    <text x="450" y="340" text-anchor="middle" font-size="16" font-weight="bold">經濟效益</text>
+                    <text x="450" y="370" text-anchor="middle" font-size="12">(可負擔電價)</text>
+                    <circle cx="50" cy="350" r="15" fill="var(--color-accent)"/>
+                    <text x="50" y="340" text-anchor="middle" font-size="16" font-weight="bold">能源安全</text>
+                    <text x="50" y="370" text-anchor="middle" font-size="12">(穩定供應)</text>
+                    <text x="250" y="220" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--color-primary)">你，願意為了其中一項，</text>
+                    <text x="250" y="250" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--color-primary)">犧牲另外兩項到什麼程度？</text>
+                </svg>
+                <p id="trilemma-text" style="text-align:center; margin-top: -1rem; display: none;">沒有任何一種能源是完美的。太陽能佔地、風力有間歇性、天然氣有進口風險與碳排、核能則有安全與廢料問題。<strong>你的選擇，決定了台灣能源的未來樣貌。</strong></p>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 提出這個經典的「三難困境」框架，引導觀眾從單點爭議，提升到系統性思考的層次。</p>
+                <p>2. 解釋三個頂點的意義：安全（穩定）、永續（環保）、效益（便宜）。強調三者很難兼得，必須取捨。</p>
+                <p>3. 以開放式問題作結，將思考權交還給觀眾，鼓勵他們反思自己的價值觀與優先順序。這不是給答案，而是提出一個更好的問題。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">核能@1-6</span>: 綜合所有文件中的優缺點分析。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 27: 行動清單與KPI -->
         <section class="slide" data-slide-name="action-plan">
             <div class="slide-content">
                 <h2>行動清單：無論結果，都該推動的治理革新</h2>
@@ -1323,7 +1526,7 @@
             </div>
         </section>
 
-        <!-- Slide 24: 參考資料 -->
+        <!-- Slide 28: 參考資料 -->
         <section class="slide" data-slide-name="references">
             <div class="slide-content">
                 <h2>主要參考資料</h2>
@@ -1353,11 +1556,11 @@
             </div>
         </section>
         
-        <!-- Slide 25: 結尾頁 -->
+        <!-- Slide 29: 結尾頁 -->
         <section class="slide title-slide" data-slide-name="end">
             <div class="slide-content">
-                <h1>感謝聆聽</h1>
-                <p class="subtitle" style="margin-top: 2rem;">促進理性對話，共創永續未來</p>
+                <p class="subtitle" style="margin-top: 2rem; font-size: 1.8rem; line-height: 1.6;">父啊，赦免他們！<br>因為他們不知道自己在做什麼。</p>
+                <p style="text-align: right; width: 100%; max-width: 600px; margin: 1rem auto;">- 路加福音 23:34</p>
             </div>
             <!-- Speaker Notes -->
             <div class="speaker-notes" style="display:none;">
@@ -1567,6 +1770,17 @@
             sourceBtnContainer.appendChild(button);
         }
     }
+    
+    // --- 特殊互動邏輯 ---
+    function revealTrilemma() {
+        const btn = document.getElementById('reveal-trilemma-btn');
+        const svg = document.getElementById('trilemma-svg');
+        const text = document.getElementById('trilemma-text');
+        btn.style.display = 'none';
+        svg.style.display = 'block';
+        text.style.display = 'block';
+    }
+
 
     // --- 初始化 ---
     function init() {
