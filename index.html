@@ -76,7 +76,7 @@
             visibility: hidden;
             transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
             transform: scale(0.95);
-            padding: 4rem 5rem 6rem 5rem; /* 增加底部 padding 給 footer UI 空間 */
+            padding: 2.5rem 5rem 6rem 5rem; /* 減少頂部 padding */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -109,7 +109,13 @@
             line-height: 1.3;
         }
         h1 { font-size: 3.5rem; }
-        h2 { font-size: 2.8rem; border-bottom: 3px solid var(--color-secondary); padding-bottom: 0.5rem; margin-bottom: 2rem; }
+        h2 { 
+            font-size: 2.8rem; 
+            border-bottom: 3px solid var(--color-secondary); 
+            padding-bottom: 0.5rem; 
+            margin-top: 0; /* 移除 h2 頂部 margin */
+            margin-bottom: 1rem; /* 減少底部 margin */
+        }
         h3 { font-size: 1.8rem; color: var(--color-secondary); text-align: left; margin-top: 1.5rem; }
         h4 { font-size: 1.2rem; color: var(--color-gray); margin-bottom: 0.5rem; text-align: left; }
         p { font-size: 1.2rem; line-height: 1.8; margin: 1rem 0; text-align: left; }
@@ -140,27 +146,37 @@
             text-align: center;
         }
         
-        .toc-slide ol {
-            columns: 2;
-            column-gap: 4rem;
+        .toc-container {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+        }
+        .toc-container ol {
             list-style-type: none;
             counter-reset: toc-counter;
             padding-left: 0;
+            width: 45%;
         }
-        .toc-slide li {
+        .toc-container .col2 {
+            counter-reset: toc-counter 6; /* 讓第二欄從 7 開始計數 */
+        }
+        .toc-container li {
             counter-increment: toc-counter;
-            margin-bottom: 1.2rem; /* 減少行距 */
+            margin-bottom: 1.5rem;
             font-size: 1.2rem;
             cursor: pointer;
             transition: color 0.2s;
+            text-align: left;
         }
-        .toc-slide li:before {
-            content: counter(toc-counter, decimal-leading-zero); /* 移除點和空格 */
+        .toc-container li:before {
+            content: counter(toc-counter, decimal-leading-zero);
             color: var(--color-secondary);
             font-weight: 700;
             margin-right: 1.5rem;
+            display: inline-block;
+            width: 2.5rem;
         }
-        .toc-slide li:hover {
+        .toc-container li:hover {
             color: var(--color-accent);
         }
 
@@ -192,7 +208,6 @@
         /* --- 表格樣式 --- */
         .slide-has-table .slide-content {
             justify-content: flex-start;
-            padding-top: 1rem;
         }
          .slide-has-table h2 {
             margin-bottom: 1rem;
@@ -229,6 +244,9 @@
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             line-height: 1.7;
+        }
+        .text-center {
+            text-align: center;
         }
 
         /* --- UI 元件 --- */
@@ -416,14 +434,18 @@
             background-color: #f0f7f7;
             border-left: 5px solid var(--color-secondary);
             padding: 1.5rem 2rem;
-            margin-top: 2rem;
+            margin-top: 1rem;
             border-radius: 8px;
             text-align: left;
         }
         .highlight-box p {
             margin-top: 0;
-            color: var(--color-primary);
-            font-weight: 700;
+            font-weight: normal;
+        }
+        .highlight-box h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            text-align: left;
         }
         .highlight-box ul {
             list-style-type: none;
@@ -440,6 +462,32 @@
             left: 0;
             font-weight: bold;
         }
+
+        .flowchart {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        .flowchart-step {
+            background: var(--color-light-gray);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            flex: 1;
+            margin: 0 1rem;
+        }
+        .flowchart-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--color-secondary);
+        }
     </style>
 </head>
 <body>
@@ -451,7 +499,7 @@
         <section class="slide active title-slide" data-slide-name="cover">
             <div class="slide-content">
                 <p class="subtitle">一份基於公開資料的系統性整理</p>
-                <h1>台灣核能公共討論：<br>理性與科學</h1>
+                <h1>核三的十字路口：<br>你的一票，決定了什麼？</h1>
                 <div class="author-info">
                     <p>報告人：蔡秀吉 (thc1006)</p>
                     <p>資料來源：基於社群協作知識庫、Davidson Institute International science club</p>
@@ -476,20 +524,24 @@
         <section class="slide" data-slide-name="toc">
             <div class="slide-content">
                 <h2>簡報目錄</h2>
-                <ol class="toc-slide">
-                    <li onclick="goToSlide(2)">兩種科學，一個決策</li>
-                    <li onclick="goToSlide(3)">公投題目精讀</li>
-                    <li onclick="goToSlide(5)">核能基礎原理</li>
-                    <li onclick="goToSlide(7)">風險治理與教訓</li>
-                    <li onclick="goToSlide(9)">台灣現況盤點</li>
-                    <li onclick="goToSlide(11)">正反論點對照</li>
-                    <li onclick="goToSlide(17)">重啟效益量化</li>
-                    <li onclick="goToSlide(19)">風險與前置條件</li>
-                    <li onclick="goToSlide(21)">戰時韌性：雙面刃</li>
-                    <li onclick="goToSlide(22)">兩種情境路線圖</li>
-                    <li onclick="goToSlide(25)">終極的能源困境</li>
-                    <li onclick="goToSlide(26)">行動清單與 KPI</li>
-                </ol>
+                <div class="toc-container">
+                    <ol class="col1" start="1">
+                        <li onclick="goToSlide(2)">兩種科學，一個決策</li>
+                        <li onclick="goToSlide(3)">公投題目精讀</li>
+                        <li onclick="goToSlide(4)">核能基礎原理</li>
+                        <li onclick="goToSlide(6)">風險治理與教訓</li>
+                        <li onclick="goToSlide(8)">台灣現況盤點</li>
+                        <li onclick="goToSlide(10)">正反論點對照</li>
+                    </ol>
+                    <ol class="col2" start="7">
+                        <li onclick="goToSlide(16)">重啟效益量化</li>
+                        <li onclick="goToSlide(18)">風險與前置條件</li>
+                        <li onclick="goToSlide(20)">戰時韌性：雙面刃</li>
+                        <li onclick="goToSlide(21)">兩種情境路線圖</li>
+                        <li onclick="goToSlide(24)">終極的能源困境</li>
+                        <li onclick="goToSlide(25)">行動清單與 KPI</li>
+                    </ol>
+                </div>
             </div>
              <!-- Speaker Notes -->
             <div class="speaker-notes" style="display:none;">
@@ -748,7 +800,7 @@
                     <thead>
                         <tr>
                             <th>事故</th>
-                            <th>切爾諾貝利 (1986)</th>
+                            <th>車諾比 (1986)</th>
                             <th>福島第一核電廠 (2011)</th>
                         </tr>
                     </thead>
@@ -781,7 +833,7 @@
             <div class="speaker-notes" style="display:none;">
                 <h3>備講重點：</h3>
                 <p>1. 簡要說明兩起最著名的核事故，並強調其根本原因的差異：一個是人禍，一個是天災。</p>
-                <p>2. 指出切爾諾貝利式的石墨反應爐早已被淘汰，現代反應爐（尤其是 PWR）的設計已從根本上避免了同類事故的可能。</p>
+                <p>2. 指出車諾比式的石墨反應爐早已被淘汰，現代反應爐（尤其是 PWR）的設計已從根本上避免了同類事故的可能。</p>
                 <p>3. 強調福島事故後，全球核電廠（包括台灣）都進行了安全總體檢與強化，特別是針對斷電和海嘯的防護措施。</p>
             </div>
             <!-- Sources -->
@@ -826,7 +878,7 @@
             <div class="speaker-notes" style="display:none;">
                 <h3>備講重點：</h3>
                 <p>1. 講述「惡魔核心」這個充滿戲劇性的故事，吸引聽眾注意。</p>
-                <p>2. 強調這不是設備故障，而是「人」的問題。連結到切爾諾貝利事故，說明安全文化的重要性。</p>
+                <p>2. 強調這不是設備故障，而是「人」的問題。連結到車諾比事故，說明安全文化的重要性。</p>
                 <p>3. 帶出一個反思：我們是否能 100% 相信制度與SOP能約束人性的弱點？這就是風險永遠無法降為零的原因。</p>
             </div>
             <!-- Sources -->
@@ -955,23 +1007,26 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>恆春斷層系統</strong></td>
-                            <td>距離廠址約 <strong>0.7 km</strong></td>
+                            <td class="text-center"><strong>恆春斷層系統</strong></td>
+                            <td class="text-center">距離廠址約 <strong>0.7 km</strong></td>
                         </tr>
                         <tr>
-                            <td><strong>西恆春外海斷層</strong></td>
-                            <td>距離廠址約 <strong>12 km</strong></td>
+                            <td class="text-center"><strong>西恆春外海斷層</strong></td>
+                            <td class="text-center">距離廠址約 <strong>12 km</strong></td>
                         </tr>
                         <tr>
-                            <td><strong>馬尼拉隱沒帶</strong></td>
-                            <td>距離廠址約 <strong>13–20 km</strong></td>
+                            <td class="text-center"><strong>馬尼拉隱沒帶</strong></td>
+                            <td class="text-center">距離廠址約 <strong>13–20 km</strong></td>
                         </tr>
                     </tbody>
                 </table>
                 <p style="text-align: center; margin-top: 1.5rem;">現代的風險評估，是一套系統性流程，旨在處理各種科學上的「不確定性」。</p>
-                <p style="text-align: center; font-size: 1.2rem; background: var(--color-light-gray); padding: 1rem; border-radius: 8px;">
-                    [地質調查] → [機率式地震危害分析 PSHA] → [廠址反應分析 FIRS] → [最終設計/補強決策]
-                </p>
+                <div class="flowchart">
+                    <div class="flowchart-step">地質調查</div>
+                    <div class="flowchart-step">機率式地震<br>危害分析 (PSHA)</div>
+                    <div class="flowchart-step">廠址反應<br>分析 (FIRS)</div>
+                    <div class="flowchart-step">最終設計/<br>補強決策</div>
+                </div>
             </div>
             <!-- Speaker Notes -->
             <div class="speaker-notes" style="display:none;">
@@ -1002,7 +1057,7 @@
                     <tbody>
                         <tr>
                             <td>新標準 (PSHA) 評估的地震搖晃程度 (>1.0g)，超過舊標準 (DSHA) 的設計 (0.4g)。這代表若要延役，結構<strong>耐震能力</strong>必須重新評估與補強。</td>
-                            <td>更根本的爭議在於，地質學家對於恆春斷層的 <strong> 活動性</strong> 與 <strong>行為模式</strong> 有不同詮釋。爭點如下：<ul><li><strong>斷層分類</strong>：究竟是風險較低的第二類，還是近萬年有活動、風險更高的第一類活動斷層？</li><li><strong>地表破裂風險</strong>：斷層是否可能在廠址附近產生直接的地表位移或擠壓變形 (Fault Displacement)？</li></ul></td>
+                            <td>更根本的爭議在於，地質學家對於恆春斷層的 <strong>活動性</strong> 與 <strong>行為模式</strong> 有不同詮釋。爭點如下：<ul><li><strong>斷層分類</strong>：究竟是風險較低的第二類，還是近萬年有活動、風險更高的第一類活動斷層？</li><li><strong>地表破裂風險</strong>：斷層是否可能在廠址附近產生直接的地表位移或擠壓變形 (Fault Displacement)？</li></ul></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1135,12 +1190,12 @@
                         </tr>
                         <tr>
                             <td><strong>戰術脆弱性</strong><br>(遭受攻擊)</td>
-                            <td><strong>劣勢</strong>：廠址固定，是敵方高價值的 <strong>戰略攻擊目標</strong> 。且運轉極度依賴 <strong>外部電網</strong> 維持冷卻系統。</td>
+                            <td><strong>劣勢</strong>：廠址固定，是敵方高價值的<strong>戰略攻擊目標</strong>。且運轉極度依賴<strong>外部電網</strong>維持冷卻系統。</td>
                             <td><strong>優勢</strong>：接收站與電廠目標較分散。<strong>劣勢</strong>：港口與儲氣槽仍是關鍵基礎設施。</td>
                         </tr>
                         <tr>
                             <td><strong>現實案例</strong></td>
-                            <td>烏克蘭 <strong>札波羅熱核電廠 (ZNPP)</strong> 在戰爭中多次斷電，被 IAEA 評為「極為脆弱」，並淪為俄軍佔領下的人質。</td>
+                            <td>烏克兰**札波羅熱核電廠 (ZNPP)** 在戰爭中多次斷電，被 IAEA 評為「極為脆弱」，並淪為俄軍佔領下的人質。</td>
                             <td>俄烏戰爭引發的歐洲天然氣危機，導致價格飆漲與供應不穩。</td>
                         </tr>
                     </tbody>
