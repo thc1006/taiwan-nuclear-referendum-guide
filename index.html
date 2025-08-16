@@ -28,7 +28,7 @@
         /* --- 基本設定與字體 --- */
         :root {
             --font-main: 'Inter', 'Helvetica Neue', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            --color-bg: #212529; /* 深色背景以凸顯簡報 */
+            --color-bg: #f8f9fa;
             --color-text: #212529;
             --color-primary: #005f73;
             --color-secondary: #0a9396;
@@ -36,8 +36,8 @@
             --color-light-gray: #e9ecef;
             --color-gray: #6c757d;
             --color-white: #ffffff;
-            --slide-base-width: 1280px;
-            --slide-base-height: 720px;
+            --slide-width: 1280px;
+            --slide-height: 720px;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap');
 
@@ -52,17 +52,18 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            font-size: 18px;
         }
 
         /* --- 投影片容器與比例 --- */
         #presentation-container {
-            width: var(--slide-base-width);
-            height: var(--slide-base-height);
+            width: 100vw;
+            height: 56.25vw; /* 16:9 Aspect Ratio */
+            max-height: 100vh;
+            max-width: 177.78vh; /* 16:9 Aspect Ratio */
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             background: var(--color-white);
-            transform-origin: center;
-            transition: transform 0.3s ease; /* 讓縮放更平滑 */
         }
 
         /* --- 投影片基本樣式 --- */
@@ -453,7 +454,7 @@
                 <p class="subtitle">一份基於公開資料的系統性整理</p>
                 <h1>台灣核能公共討論：<br>理性與科學</h1>
                 <div class="author-info">
-                    <p>報告人：蔡秀吉 (thc1006)</p>
+                    <p> 蔡秀吉 (thc1006)</p>
                     <p>資料來源：基於社群協作知識庫、Davidson Institute International science club</p>
                 </div>
             </div>
@@ -701,7 +702,7 @@
                             <li><strong>控制棒 (油門/剎車)</strong>：由吸收中子的材料（如硼、鎘）製成。插入爐心可減緩反應，抽出則加速。緊急情況下，控制棒會完全插入，實現緊急停堆 (SCRAM)。</li>
                             <li><strong>冷卻劑 (散熱系統)</strong>：通常是水。它不斷循環帶走爐心產生的巨大熱量，防止燃料過熱熔毀，同時將熱能傳遞去發電。</li>
                             <li><strong>慢化劑 (反應催化劑)</strong>：同樣是水。裂變產生的中子速度太快，不易引發下一次裂變。水可以有效降低中子速度，維持鏈式反應的效率。</li>
-                        </ol>
+                        </ul>
                     </div>
                     <div>
                         <svg viewBox="0 0 400 300" class="svg-chart" aria-labelledby="reactor-title" role="img">
@@ -1217,7 +1218,7 @@
             <div class="slide-content">
                 <h2>重啟效益量化 (1/2)：對能源與環境的貢獻</h2>
                 <p>若核三廠兩部機組在通過嚴格安審後順利重啟，每年預計可帶來以下實質效益：</p>
-                <table class="table-v-center">
+                <table>
                     <thead>
                         <tr>
                             <th>指標</th>
@@ -1688,24 +1689,6 @@
     const totalSlides = slides.length;
     let currentSlide = 0;
 
-    function scalePresentation() {
-        const presentation = document.getElementById('presentation-container');
-        const container = document.body;
-        
-        const baseWidth = 1280;
-        const baseHeight = 720;
-
-        const availableWidth = container.clientWidth;
-        const availableHeight = container.clientHeight;
-
-        const scaleX = availableWidth / baseWidth;
-        const scaleY = availableHeight / baseHeight;
-
-        const scale = Math.min(scaleX, scaleY);
-
-        presentation.style.transform = `scale(${scale})`;
-    }
-
     function updateSlide(newIndex) {
         // 邊界檢查
         if (newIndex < 0) {
@@ -1867,9 +1850,6 @@
 
     // --- 初始化 ---
     function init() {
-        window.addEventListener('resize', scalePresentation);
-        scalePresentation();
-
         if (window.location.hash) {
             handleHashChange();
         } else {
