@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>核三的十字路口：你的一票，決定了什麼？</title>
+    <title>台灣核能公共討論：理性與科學</title>
 
     <!-- SEO and Social Sharing Meta Tags -->
     <meta name="author" content="蔡秀吉 (thc1006)">
@@ -20,7 +20,7 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://thc1006.github.io/taiwan-nuclear-referendum-guide/">
-    <meta property="twitter:title" content="：理性與科學 (2025 公投全解析)">
+    <meta property="twitter:title" content="台灣核能公共討論：理性與科學 (2025 公投全解析)">
     <meta property="twitter:description" content="一份基於公開資料、旨在促進理性科學討論的互動式簡報。">
     <meta property="twitter:image" content="https://raw.githubusercontent.com/thc1006/taiwan-nuclear-referendum-guide/refs/heads/main/images/thumbnail.png">
 
@@ -28,7 +28,7 @@
         /* --- 基本設定與字體 --- */
         :root {
             --font-main: 'Inter', 'Helvetica Neue', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            --color-bg: #f8f9fa;
+            --color-bg: #212529; /* 深色背景以凸顯簡報 */
             --color-text: #212529;
             --color-primary: #005f73;
             --color-secondary: #0a9396;
@@ -36,8 +36,8 @@
             --color-light-gray: #e9ecef;
             --color-gray: #6c757d;
             --color-white: #ffffff;
-            --slide-width: 1280px;
-            --slide-height: 720px;
+            --slide-base-width: 1280px;
+            --slide-base-height: 720px;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap');
 
@@ -52,18 +52,17 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-size: 18px;
         }
 
         /* --- 投影片容器與比例 --- */
         #presentation-container {
-            width: 100vw;
-            height: 56.25vw; /* 16:9 Aspect Ratio */
-            max-height: 100vh;
-            max-width: 177.78vh; /* 16:9 Aspect Ratio */
+            width: var(--slide-base-width);
+            height: var(--slide-base-height);
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             background: var(--color-white);
+            transform-origin: center;
+            transition: transform 0.3s ease; /* 讓縮放更平滑 */
         }
 
         /* --- 投影片基本樣式 --- */
@@ -452,9 +451,9 @@
         <section class="slide active title-slide" data-slide-name="cover">
             <div class="slide-content">
                 <p class="subtitle">一份基於公開資料的系統性整理</p>
-                <h1>核三的十字路口<br>你的一票，決定了什麼？</h1>
+                <h1>台灣核能公共討論：<br>理性與科學</h1>
                 <div class="author-info">
-                    <p> 蔡秀吉 hctsai@g.postech.edu </p>
+                    <p>報告人：蔡秀吉 (thc1006)</p>
                     <p>資料來源：基於社群協作知識庫、Davidson Institute International science club</p>
                 </div>
             </div>
@@ -478,18 +477,18 @@
             <div class="slide-content">
                 <h2>簡報目錄</h2>
                 <ol class="toc-slide">
-                    <li onclick="goToSlide(2)">公投題目精讀</li>
-                    <li onclick="goToSlide(4)">核能基礎原理</li>
-                    <li onclick="goToSlide(6)">未來的希望？</li>
+                    <li onclick="goToSlide(2)">兩種科學，一個決策</li>
+                    <li onclick="goToSlide(3)">公投題目精讀</li>
+                    <li onclick="goToSlide(5)">核能基礎原理</li>
                     <li onclick="goToSlide(7)">風險治理與教訓</li>
-                    <li onclick="goToSlide(9)">人的因素：安全文化</li>
-                    <li onclick="goToSlide(10)">台灣現況盤點</li>
-                    <li onclick="goToSlide(12)">正反論點對照</li>
-                    <li onclick="goToSlide(19)">重啟效益量化</li>
-                    <li onclick="goToSlide(21)">風險與前置條件</li>
-                    <li onclick="goToSlide(23)">兩種情境路線圖</li>
-                    <li onclick="goToSlide(26)">終極的能源困境</li>
-                    <li onclick="goToSlide(27)">行動清單與 KPI</li>
+                    <li onclick="goToSlide(9)">台灣現況盤點</li>
+                    <li onclick="goToSlide(11)">正反論點對照</li>
+                    <li onclick="goToSlide(17)">重啟效益量化</li>
+                    <li onclick="goToSlide(19)">風險與前置條件</li>
+                    <li onclick="goToSlide(21)">戰時韌性：雙面刃</li>
+                    <li onclick="goToSlide(22)">兩種情境路線圖</li>
+                    <li onclick="goToSlide(25)">終極的能源困境</li>
+                    <li onclick="goToSlide(26)">行動清單與 KPI</li>
                 </ol>
             </div>
              <!-- Speaker Notes -->
@@ -507,7 +506,42 @@
             </div>
         </section>
         
-        <!-- Slide 3: 公投題目精讀 -->
+        <!-- Slide 3: 新增 - 兩種科學，一個決策 -->
+        <section class="slide" data-slide-name="two-sciences">
+            <div class="slide-content">
+                <h2>我們如何理性討論「風險」？</h2>
+                <p>一個好的公共決策，需要兩種科學的共同參與。</p>
+                <div class="two-column">
+                    <div class="highlight-box" style="border-color: var(--color-primary);">
+                        <h3 style="color: var(--color-primary);">自然科學：提供事實與證據</h3>
+                        <p>物理與工程：反應爐如何運作？發電效益有多少？</p>
+                        <p>地質與機率：地震風險有多高？事故機率怎麼算？</p>
+                        <p><strong>目標：</strong>提供可量化的證據，回答「是什麼」(What is) 的問題。</p>
+                    </div>
+                    <div class="highlight-box" style="border-color: var(--color-accent);">
+                        <h3 style="color: var(--color-accent);">社會科學：詮釋脈絡與價值</h3>
+                        <p>風險感知：為何專家說的低機率，民眾感受卻很強烈？</p>
+                        <p>信任與歷史：過去的經驗（如核廢料）如何影響今日的決策？</p>
+                        <p><strong>目標：</strong>承認並尊重價值與脈絡，回答「該如何」(What ought to be) 的問題。</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 開場定調：承認這個議題的複雜性，不只是單純的對錯。</p>
+                <p>2. 區分「自然科學」與「社會科學」的角色，前者提供事實，後者處理價值。</p>
+                <p>3. 強調本簡報的立場：尊重兩種科學，避免將社會的擔憂輕易標籤為「反科學」。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">Fact-Check</span>: NASEM 2017; Kahan 文化認知; Slovic 風險感知.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 4: 公投題目精讀 -->
         <section class="slide" data-slide-name="referendum-question">
             <div class="slide-content">
                 <h2>公投題目精讀：文字背後的法律意涵</h2>
@@ -546,7 +580,7 @@
             </div>
         </section>
 
-        <!-- Slide 4: 核能基礎 (E=mc²) -->
+        <!-- Slide 5: 核能基礎 (E=mc²) -->
         <section class="slide" data-slide-name="basics-emc2">
             <div class="slide-content">
                 <h2>核能基礎 (1/2)：能量從何而來？</h2>
@@ -593,7 +627,7 @@
             </div>
         </section>
 
-        <!-- Slide 5: 核能基礎 (BWR vs PWR) -->
+        <!-- Slide 6: 核能基礎 (BWR vs PWR) -->
         <section class="slide slide-has-table" data-slide-name="basics-reactors">
             <div class="slide-content">
                 <h2>核能基礎 (2/2)：主流反應爐比較</h2>
@@ -650,46 +684,6 @@
             </div>
         </section>
         
-        <!-- Slide 6: 未來的希望？SMR 與核融合 -->
-        <section class="slide" data-slide-name="future-tech">
-            <div class="slide-content">
-                <h2>未來的希望？SMR 與核融合</h2>
-                <p>除了現行的反應爐，核能的未來發展聚焦於更安全、更高效的新技術。</p>
-                <div class="two-column">
-                    <div>
-                        <h3>小型模組化反應爐 (SMR)</h3>
-                        <p>SMR 是指發電量較小（通常低於 300 MW）的核電機組，具備工廠預製、模組化運輸與安裝的特性。</p>
-                        <ul>
-                            <li><strong>潛在優點</strong>：更短的工期、更低的初始投資、可依需求彈性擴充、部分設計具備更高的「本質安全」特性。</li>
-                            <li><strong>台灣現況</strong>：國原院已啟動研究計畫，但全球多數 SMR 技術仍在示範階段，商業化時程未定。</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>核融合 (聖杯級能源)</h3>
-                        <p>模仿太陽發光發熱的原理，被視為終極潔淨能源。優點是燃料幾乎無限（來自海水），且不產生長半衰期核廢料。</p>
-                        <ul>
-                            <li><strong>巨大挑戰</strong>：需達成極端的高溫高壓條件，並實現「能量淨增益」。</li>
-                            <li><strong>進展</strong>：過去常被戲稱「永遠還有 30 年」，但近年在公私部門的投入下，技術突破信號日增，或許能縮短等待時間。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Speaker Notes -->
-            <div class="speaker-notes" style="display:none;">
-                <h3>備講重點：</h3>
-                <p>1. 介紹 SMR，可以把它比喻成「核能界的樂高」，更有彈性也可能更安全。</p>
-                <p>2. 介紹核融合，強調它的巨大潛力，但也務實點出實現的難度，它還不能解決我們眼前的問題。</p>
-                <p>3. 總結：這些未來科技很重要，但不能當作解決當下能源政策爭議的藉口。</p>
-            </div>
-            <!-- Sources -->
-            <div class="sources-data" style="display:none;">
-                <ul>
-                    <li><span class="source-ref">核能@1</span>: SMR 與核融合介紹。</li>
-                    <li><span class="source-ref">核能@3</span>: 台灣 SMR 研究計畫。</li>
-                </ul>
-            </div>
-        </section>
-
         <!-- Slide 7: 風險治理 (1/2) -->
         <section class="slide" data-slide-name="risk-governance1">
             <div class="slide-content">
@@ -702,7 +696,7 @@
                             <li><strong>控制棒 (油門/剎車)</strong>：由吸收中子的材料（如硼、鎘）製成。插入爐心可減緩反應，抽出則加速。緊急情況下，控制棒會完全插入，實現緊急停堆 (SCRAM)。</li>
                             <li><strong>冷卻劑 (散熱系統)</strong>：通常是水。它不斷循環帶走爐心產生的巨大熱量，防止燃料過熱熔毀，同時將熱能傳遞去發電。</li>
                             <li><strong>慢化劑 (反應催化劑)</strong>：同樣是水。裂變產生的中子速度太快，不易引發下一次裂變。水可以有效降低中子速度，維持鏈式反應的效率。</li>
-                        </ul>
+                        </ol>
                     </div>
                     <div>
                         <svg viewBox="0 0 400 300" class="svg-chart" aria-labelledby="reactor-title" role="img">
@@ -754,7 +748,7 @@
                     <thead>
                         <tr>
                             <th>事故</th>
-                            <th>車諾比 (1986)</th>
+                            <th>切爾諾貝利 (1986)</th>
                             <th>福島第一核電廠 (2011)</th>
                         </tr>
                     </thead>
@@ -787,7 +781,7 @@
             <div class="speaker-notes" style="display:none;">
                 <h3>備講重點：</h3>
                 <p>1. 簡要說明兩起最著名的核事故，並強調其根本原因的差異：一個是人禍，一個是天災。</p>
-                <p>2. 指出車諾比式的石墨反應爐早已被淘汰，現代反應爐（尤其是 PWR）的設計已從根本上避免了同類事故的可能。</p>
+                <p>2. 指出切爾諾貝利式的石墨反應爐早已被淘汰，現代反應爐（尤其是 PWR）的設計已從根本上避免了同類事故的可能。</p>
                 <p>3. 強調福島事故後，全球核電廠（包括台灣）都進行了安全總體檢與強化，特別是針對斷電和海嘯的防護措施。</p>
             </div>
             <!-- Sources -->
@@ -832,7 +826,7 @@
             <div class="speaker-notes" style="display:none;">
                 <h3>備講重點：</h3>
                 <p>1. 講述「惡魔核心」這個充滿戲劇性的故事，吸引聽眾注意。</p>
-                <p>2. 強調這不是設備故障，而是「人」的問題。連結到車諾比事故，說明安全文化的重要性。</p>
+                <p>2. 強調這不是設備故障，而是「人」的問題。連結到切爾諾貝利事故，說明安全文化的重要性。</p>
                 <p>3. 帶出一個反思：我們是否能 100% 相信制度與SOP能約束人性的弱點？這就是風險永遠無法降為零的原因。</p>
             </div>
             <!-- Sources -->
@@ -861,10 +855,10 @@
                         <svg viewBox="0 0 400 300" class="svg-chart" aria-labelledby="power-mix-title" role="img">
                             <title id="power-mix-title">2025年預估電力結構</title>
                             <circle cx="200" cy="150" r="100" fill="#003f5c"/>
-                            <path d="M200,150 L200,50 A100,100 0 0,1 251.7,242.7 Z" fill="#ffa600"/>
+                            <path d="M 200,150 L 200,50 A 100,100 0 0,1 284.4,96.5 Z" fill="#ffa600"/>
                             <text x="200" y="30" text-anchor="middle" font-size="14" fill="var(--color-primary)">2025年預估電力結構 (核電歸零後)</text>
                             <text x="130" y="155" fill="white" font-size="16" font-weight="bold">化石燃料 84%</text>
-                            <text x="270" y="220" fill="var(--color-text)" font-size="16" font-weight="bold">再生能源等 16%</text>
+                            <text x="270" y="80" fill="var(--color-text)" font-size="16" font-weight="bold">再生能源等 16%</text>
                         </svg>
                     </div>
                 </div>
@@ -949,27 +943,66 @@
             </div>
         </section>
 
-        <!-- Slide 13: 正反論點 (1/5 地震) -->
-        <section class="slide slide-has-table" data-slide-name="arg-seismic">
+        <!-- Slide 13: 地震危害 (1/2) -->
+        <section class="slide slide-has-table" data-slide-name="arg-seismic-1">
             <div class="slide-content">
-                <h2>論點對照 (1/5)：地質與耐震風險</h2>
+                <h2>地震危害 (1/2)：從 PSHA 到設計基準</h2>
                 <table class="table-v-center">
                     <thead>
                         <tr>
-                            <th>反方主要關切</th>
-                            <th>事實與數據檢視</th>
+                            <th colspan="2">核三廠周邊主要控制震源</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>核三廠鄰近活動斷層，原設計的耐震標準 (地表加速度 0.4g) 已不足以應對最新的地震危害評估。</td>
-                            <td>
-                                <ul>
-                                    <li><strong>事實</strong>：核三廠距離恆春斷層約<strong> 0.7–1.1 公里</strong>。</li>
-                                    <li><strong>數據</strong>：根據 2022 年最新的機率式地震危害分析 (SSHAC Level 3)，廠址在特定情境下的地表加速度可能超過<strong> 1.0g</strong>，確實高於原設計基準。</li>
-                                    <li><strong>結論</strong>：此項關切<strong>合理且關鍵</strong>。若要延役，勢必需要進行嚴格的耐震能力重新評估，並可能需要投入鉅資進行結構補強。</li>
-                                </ul>
-                            </td>
+                            <td><strong>恆春斷層系統</strong></td>
+                            <td>距離廠址約 <strong>0.7 km</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>西恆春外海斷層</strong></td>
+                            <td>距離廠址約 <strong>12 km</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>馬尼拉隱沒帶</strong></td>
+                            <td>距離廠址約 <strong>13–20 km</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: center; margin-top: 1.5rem;">現代的風險評估，是一套系統性流程，旨在處理各種科學上的「不確定性」。</p>
+                <p style="text-align: center; font-size: 1.2rem; background: var(--color-light-gray); padding: 1rem; border-radius: 8px;">
+                    [地質調查] → [機率式地震危害分析 PSHA] → [廠址反應分析 FIRS] → [最終設計/補強決策]
+                </p>
+            </div>
+            <!-- Speaker Notes -->
+            <div class="speaker-notes" style="display:none;">
+                <h3>備講重點：</h3>
+                <p>1. 說明現代地震風險評估不是只看一條斷層，而是綜合評估區域內所有可能的威脅。</p>
+                <p>2. 介紹 PSHA 流程，強調這是一套處理「不確定性」的科學方法。</p>
+                <p>3. 為下一頁的爭議點鋪陳：科學家們正是在這個流程的每一個環節，都可能因模型或參數選擇不同而產生分歧。</p>
+            </div>
+            <!-- Sources -->
+            <div class="sources-data" style="display:none;">
+                <ul>
+                    <li><span class="source-ref">Fact-Check</span>: 核安會 PSHA 公開報告; 美國 NRC SPRA 實務.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 14: 地震危害 (2/2) -->
+        <section class="slide slide-has-table" data-slide-name="arg-seismic-2">
+            <div class="slide-content">
+                <h2>地震危害 (2/2)：核心爭議點</h2>
+                <table class="table-v-center">
+                    <thead>
+                        <tr>
+                            <th>工程上的「耐震」問題 (搖晃)</th>
+                            <th>地質上的「危害」爭議 (斷裂/變形)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>新標準 (PSHA) 評估的地震搖晃程度 (>1.0g)，超過舊標準 (DSHA) 的設計 (0.4g)。這代表若要延役，結構<strong>耐震能力</strong>必須重新評估與補強。</td>
+                            <td>更根本的爭議在於，地質學家對於恆春斷層的**活動性**與**行為模式**有不同詮釋。爭點如下：<ul><li><strong>斷層分類</strong>：究竟是風險較低的第二類，還是近萬年有活動、風險更高的第一類活動斷層？</li><li><strong>地表破裂風險</strong>：斷層是否可能在廠址附近產生直接的地表位移或擠壓變形 (Fault Displacement)？</li></ul></td>
                         </tr>
                     </tbody>
                 </table>
@@ -977,19 +1010,19 @@
             <!-- Speaker Notes -->
             <div class="speaker-notes" style="display:none;">
                 <h3>備講重點：</h3>
-                <p>1. 開宗明義，地震風險是反方最強而有力的論點之一。</p>
-                <p>2. 清楚呈現「距離斷層近」和「新標準高於舊設計」這兩個核心事實。</p>
-                <p>3. 強調這不是一個「能不能」的問題，而是一個「需要花多少錢、多少時間來補強到符合最新標準」的工程與經濟問題。</p>
+                <p>1. 區分「耐震」和「地質危害」兩個層次的問題。</p>
+                <p>2. 解釋「斷層位移」的嚴重性：如果地基都裂了，房子蓋再堅固也沒用。</p>
+                <p>3. 點出這正是科學家判斷分歧的核心：對斷層本身的風險定性有不同看法，這也直接挑戰了「場址適宜性」的根本問題。</p>
             </div>
             <!-- Sources -->
             <div class="sources-data" style="display:none;">
                 <ul>
-                    <li><span class="source-ref">核能@6</span>: 地質與耐震風險資料。</li>
+                    <li><span class="source-ref">Fact-Check</span>: IAEA 安全導則 SSG-9 (Rev.1).</li>
                 </ul>
             </div>
         </section>
 
-        <!-- Slide 14: 正反論點 (2/5 成本) -->
+        <!-- Slide 15: 正反論點 (2/5 成本) -->
         <section class="slide slide-has-table" data-slide-name="arg-cost">
             <div class="slide-content">
                 <h2>論點對照 (2/5)：成本與經濟性</h2>
@@ -1040,46 +1073,6 @@
             </div>
         </section>
 
-        <!-- Slide 15: 經濟的現實：一場昂貴的賭注？ -->
-        <section class="slide" data-slide-name="economic-reality">
-            <div class="slide-content">
-                <h2>經濟的現實：一場昂貴的賭注？</h2>
-                <p>核電的經濟帳，遠比「一度電多少錢」複雜。它是一項前期投入極高、運轉數十年的長期投資。</p>
-                <div class="two-column">
-                    <div>
-                        <h3>看得見的成本</h3>
-                        <ul>
-                            <li><strong>延役工程</strong>：包含安全評估、耐震補強、更換老化組件等，預估數百億起跳。</li>
-                            <li><strong>運維成本</strong>：日常營運、燃料採購、定期大修。</li>
-                            <li><strong>後端成本</strong>：核廢料的中期貯存與最終處置、廠房除役，是長達數十年甚至百年的持續支出。</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>看不見的風險（成本）</h3>
-                        <ul>
-                            <li><strong>工期延宕風險</strong>：國際上核電工程延期是常態，每延遲一天都是巨大的財務損失。</li>
-                            <li><strong>政策風險</strong>：未來的能源或核廢料政策改變，可能增加額外成本。</li>
-                            <li><strong>災變財務風險</strong>：儘管機率極低，但一次嚴重事故的社會與財務成本可能高到無法估算。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Speaker Notes -->
-            <div class="speaker-notes" style="display:none;">
-                <h3>備講重點：</h3>
-                <p>1. 帶領觀眾跳脫單純的發電成本，從「全生命週期」的角度看待核電的經濟性。</p>
-                <p>2. 用「冰山」來比喻：發電成本只是水面上的部分，水面下還有龐大的建置、除役和廢料處理成本。</p>
-                <p>3. 幽默地說：蓋核電廠就像某些軟體專案，幾乎總是超出預算、延遲交付。這不是要否定它，而是要務實看待風險。</p>
-            </div>
-            <!-- Sources -->
-            <div class="sources-data" style="display:none;">
-                <ul>
-                    <li><span class="source-ref">核能@4</span>: 成本與工期不確定性。</li>
-                    <li><span class="source-ref">核能@6</span>: 成本與經濟性不確定。</li>
-                </ul>
-            </div>
-        </section>
-
         <!-- Slide 16: 正反論點 (3/5 核廢) -->
         <section class="slide slide-has-table" data-slide-name="arg-waste">
             <div class="slide-content">
@@ -1122,36 +1115,33 @@
             </div>
         </section>
 
-        <!-- Slide 17: 正反論點 (4/5 供電) -->
-        <section class="slide slide-has-table" data-slide-name="arg-supply">
+        <!-- Slide 17: 正反論點 (4/5 能源安全) -->
+        <section class="slide slide-has-table" data-slide-name="arg-security">
             <div class="slide-content">
-                <h2>論點對照 (4/5)：供電是否足夠？</h2>
+                <h2>論點對照 (4/5)：能源安全與國防</h2>
                 <table class="table-v-center">
                     <thead>
                         <tr>
-                            <th>主要論點</th>
-                            <th>事實與數據檢視</th>
+                            <th>議題</th>
+                            <th>核能的兩面刃特性</th>
+                            <th>天然氣 (LNG) 的對照</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>正方</strong>：AI 與半導體產業發展將導致用電量暴增，台灣面臨缺電風險，需要核能作為穩定基載。</td>
-                            <td>
-                                <ul>
-                                    <li><strong>趨勢</strong>：此論點與國際趨勢相符。美國等地對核能興趣回升，主因就是 AI 資料中心對穩定、低碳電力的龐大需求。</li>
-                                    <li><strong>效益</strong>：核三廠每年可提供約<strong> 15 TWh </strong>的穩定電力，約佔 2024 年總發電量的 6%。</li>
-                                </ul>
-                            </td>
+                            <td><strong>燃料自主性</strong><br>(抵抗封鎖)</td>
+                            <td><strong>優勢</strong>：燃料補給週期長 (約 18–24 個月)，一次裝填即可長期運轉，能有效抵抗短期海上封鎖。</td>
+                            <td><strong>劣勢</strong>：高度依賴海運，安全存量天數法定目標僅 11-14 天 (2025-27)，供應鏈極為脆弱。</td>
                         </tr>
                         <tr>
-                            <td><strong>反方</strong>：台灣不缺電，透過發展再生能源與節能措施即可滿足需求。</td>
-                            <td>
-                                <ul>
-                                    <li><strong>時程</strong>：核三重啟需約 3.5 年，<strong>無法解決短期</strong> (2025-2027) 的供電問題。</li>
-                                    <li><strong>結構風險</strong>：即使總量夠，過度依賴進口天然氣（庫存僅 10-11 天）的結構性風險依然存在。</li>
-                                    <li><strong>結論</strong>：短期內，供電穩定度取決於三接、儲能與電網強化的進度。中長期來看，核能可作為<strong>分散風險的「保險」</strong>，與再生能源互補，而非相互取代。</li>
-                                </ul>
-                            </td>
+                            <td><strong>戰術脆弱性</strong><br>(遭受攻擊)</td>
+                            <td><strong>劣勢</strong>：廠址固定，是敵方高價值的**戰略攻擊目標**。且運轉極度依賴**外部電網**維持冷卻系統。</td>
+                            <td><strong>優勢</strong>：接收站與電廠目標較分散。**劣勢**：港口與儲氣槽仍是關鍵基礎設施。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>現實案例</strong></td>
+                            <td>烏克兰**札波羅熱核電廠 (ZNPP)** 在戰爭中多次斷電，被 IAEA 評為「極為脆弱」，並淪為俄軍佔領下的人質。</td>
+                            <td>俄烏戰爭引發的歐洲天然氣危機，導致價格飆漲與供應不穩。</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1159,15 +1149,14 @@
              <!-- Speaker Notes -->
             <div class="speaker-notes" style="display:none;">
                 <h3>備講重點：</h3>
-                <p>1. 釐清爭議：這不是一個「缺不缺電」的簡單是非題，而是一個「電力品質與風險承受度」的選擇題。</p>
-                <p>2. 指出正反方觀點的盲點：正方忽略了重啟的時程，反方則可能低估了能源結構單一化的風險。</p>
-                <p>3. 提出「保險」的概念：核能的角色不是取代再生能源，而是在能源組合中提供一個不受天氣和國際燃料價格劇烈波動影響的穩定選項。</p>
+                <p>1. 說明能源安全不只是燃料問題，也包含國防戰略。</p>
+                <p>2. 用「兩面刃」的概念，平衡呈現核能與天然氣在戰時各自的優劣勢。</p>
+                <p>3. 引用烏克蘭 ZNPP 的真實案例，讓抽象的國防風險變得具體有感。</p>
             </div>
             <!-- Sources -->
             <div class="sources-data" style="display:none;">
                 <ul>
-                    <li><span class="source-ref">核能@5</span>: AI 用電趨勢與時程分析。</li>
-                     <li><span class="source-ref">核能@6</span>: 供電量佔比與 LNG 庫存天數。</li>
+                    <li><span class="source-ref">Fact-Check</span>: IAEA ZNPP 通報 (2025/7); 經濟部 LNG 安全存量規範.</li>
                 </ul>
             </div>
         </section>
@@ -1218,7 +1207,7 @@
             <div class="slide-content">
                 <h2>重啟效益量化 (1/2)：對能源與環境的貢獻</h2>
                 <p>若核三廠兩部機組在通過嚴格安審後順利重啟，每年預計可帶來以下實質效益：</p>
-                <table>
+                <table class="table-v-center">
                     <thead>
                         <tr>
                             <th>指標</th>
@@ -1689,6 +1678,24 @@
     const totalSlides = slides.length;
     let currentSlide = 0;
 
+    function scalePresentation() {
+        const presentation = document.getElementById('presentation-container');
+        const container = document.body;
+        
+        const baseWidth = 1280;
+        const baseHeight = 720;
+
+        const availableWidth = container.clientWidth;
+        const availableHeight = container.clientHeight;
+
+        const scaleX = availableWidth / baseWidth;
+        const scaleY = availableHeight / baseHeight;
+
+        const scale = Math.min(scaleX, scaleY);
+
+        presentation.style.transform = `scale(${scale})`;
+    }
+
     function updateSlide(newIndex) {
         // 邊界檢查
         if (newIndex < 0) {
@@ -1850,6 +1857,9 @@
 
     // --- 初始化 ---
     function init() {
+        window.addEventListener('resize', scalePresentation);
+        scalePresentation();
+
         if (window.location.hash) {
             handleHashChange();
         } else {
